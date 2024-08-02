@@ -48,7 +48,7 @@ const Home = () => {
             <h1 className="display-4">Welcome</h1>
           )
         }
-        <p>Let's study building Web apps with NodeJS & ExpressJS.</p>
+        <p>Let's study building Web apps with Spring Boot & ReactJS.</p>
       </div>
       <Footers></Footers>
     </div>
