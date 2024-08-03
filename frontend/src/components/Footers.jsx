@@ -5,7 +5,7 @@ const Footers = () => {
     <div>
         <footer class="border-top footer text-muted">
             <div class="container">
-                Copyright &copy; 2024 R2S - Trúc&Khiêm&Khôi - Spring Boot + ReactJS. All right reserved.
+                Copyright &copy; 2024 R2Sshop. All right reserved.
             </div>
         </footer>
     </div>
