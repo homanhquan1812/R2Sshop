@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Add_A_Product from './pages/Add_A_Product'
-import Edit_A_Product from './pages/Edit_A_Product'
+import AddCourses from './pages/AddCourses'
 import Error from './pages/Error'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Show_Products from './pages/Show_Products'
+import Show_Products from './pages/Courses'
 import About from './pages/About'
 import Cart from './pages/Cart'
 import CourseDetails from './pages/CourseDetails'
+import Transactions from './pages/Transactions'
+import EditCourses from './pages/EditCourses'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -56,6 +57,9 @@ function App() {
         <Route path="/register" element={<Register></Register>}></Route>
         <Route path="/about" element={<About></About>}></Route>
         <Route path="/cart" element={<Cart></Cart>}></Route>
+        <Route path="/transactions" element={<Transactions></Transactions>}></Route>
+        <Route path="/courses/add" element={<AddCourses></AddCourses>}></Route>
+        <Route path="/courses/edit/:id" element={<EditCourses></EditCourses>}></Route>
         <Route path="*" element={<Error></Error>}></Route>
       </Routes>
     )

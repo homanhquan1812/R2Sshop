@@ -11,7 +11,7 @@ import '../css/style.css'
 
 const CourseDetails = () => {
     const { id } = useParams()
-    const [courseId, setCourseId] = useState([])
+    const [courseId, setCourseId] = useState({})
 
     useEffect(() => {
         const fetchProductsAPI = async () => {
@@ -45,17 +45,17 @@ const CourseDetails = () => {
         <Headers></Headers>
         <div className="text-center" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         {
-            courseId && (
+            courseId && courseId.category && courseId.variant_courses[0] && (
                 <div className="col-sm-6 col-lg-9">
                       <div className="card" style={{marginTop: '16px'}}>
                         <div className="card-body">
                         <h1 className="card-title">{courseId.name}</h1>
                         <br></br>
-                        <img style={{width: '750px'}} className="card-img-top" src={courseId.photo} />
+                        <img style={{width: '750px'}} className="card-img-top" src={courseId.variant_courses[0].photo} />
                         <br></br>
                         <br></br>
                         <br></br>
-                          <p className="card-text">{courseId.description}</p>
+                          <p className="card-text">{courseId.category.description}</p>
                           <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                           <div style={{
                             display: 'grid',
@@ -64,9 +64,9 @@ const CourseDetails = () => {
                             gap: '10px'
                             }}>
                             <a href={`/courses/${courseId.id}`} className="btn btn-danger">Đăng ký khóa học ngay</a>
-                            <a href="#" className="btn btn-warning">{courseId.price} VND</a>
-                            <a href="#" className="btn btn-dark">{courseId.number_of_students} học viên đã đăng ký</a>
-                            <a href="#" className="btn btn-success">{courseId.type}</a>
+                            <a href="#" className="btn btn-warning">{courseId.variant_courses[0].price} VND</a>
+                            <a href="#" className="btn btn-dark">{courseId.variant_courses[0].number_of_students} học viên đã đăng ký</a>
+                            <a href="#" className="btn btn-success">{courseId.variant_courses[0].type}</a>
                             </div>
                           </div>
                         </div>

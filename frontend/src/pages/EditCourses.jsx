@@ -9,7 +9,7 @@ import '../css/bootstrap.min.css'
 import '../css/site.css'
 import '../css/style.css'
 
-const Edit_A_Product = () => {
+const EditCourses = () => {
   const { id } = useParams()
   const [productID, setProductID] = useState([])
   const [csw_products, setCswProducts] = useState(productID.csw_products)
@@ -72,7 +72,7 @@ const Edit_A_Product = () => {
             <main role="main" class="pb-3">
             <div>
               <br />
-              <h2>Edit this Client</h2>
+              <h2>Chỉnh sửa khóa học:</h2>
               {/*
                 <div class='alert alert-warning alert-dismissible fade show' role='alert'>
               <strong>@Model.failureMessage</strong>
@@ -131,4 +131,4 @@ const Edit_A_Product = () => {
   )
 }
 
-export default Edit_A_Product
+export default EditCourses

@@ -8,7 +8,7 @@ import '../css/bootstrap.min.css'
 import '../css/site.css'
 import '../css/style.css'
 
-const Show_Products = () => {
+const Courses = () => {
   const [products, setProducts] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
@@ -27,7 +27,7 @@ const Show_Products = () => {
   const navigateTo = useNavigate()
 
   const handleAddProduct = () => {
-      navigateTo('/products/add')
+      navigateTo('/courses/add')
   }
 
   const deleteProduct = async (id, e) => {
@@ -73,17 +73,27 @@ const Show_Products = () => {
             <div>
               <br />
               <h2>Tất cả khóa học tại R2S:</h2>
+              <br></br>
+              <button type="button" className="btn btn-primary" onClick={handleAddProduct}>Thêm khoá học mới</button>
               <div className='mt-4'>
                 <div className='row'>
                   {currentProducts.map((product, index) => (
                     <div className="col-sm-6 col-lg-4" key={index}>
-                      <div className="card" style={{marginTop: '16px', width: '100%', height: '460px'}}>
-                        <img className="card-img-top" src={product.photo} style={{height: '200px', objectFit: 'cover'}} />
+                      <div className="card" style={{marginTop: '16px', width: '100%', height: '410px'}}>
+                        <img className="card-img-top" src={product.variant_courses[0].photo} style={{height: '200px', objectFit: 'cover'}} />
                         <div className="card-body" style={{height: '200px', overflow: 'auto'}}>
                           <h5 className="card-title">{product.name}</h5>
-                          <p className="card-text">{product.description}</p>
-                          <div style={{position: 'absolute', bottom: '65px', left: 0, right: 0, textAlign: 'center'}}>
+                          <p className="card-text">{product.category.description}</p>
+                          {/*
+                          <div style={{position: 'absolute', bottom: '25px', left: 0, right: 0, textAlign: 'center'}}>
                             <a href={`/courses/${product.id}`} className="btn btn-primary">Chi tiết khóa học</a>
+                          </div>
+                          */}
+                          <div style={{position: 'absolute', bottom: '25px', left: 0, right: 0, marginLeft: '50px', textAlign: 'left'}}>
+                            <a href={`/courses/${product.id}`} className="btn btn-primary">Chi tiết khóa học</a>
+                          </div>
+                          <div style={{position: 'absolute', bottom: '25px', left: 0, right: 0, marginRight: '50px', textAlign: 'right'}}>
+                            <a href={`/courses/edit/${product.id}`} className="btn btn-danger">Chỉnh sửa khóa học</a>
                           </div>
                         </div>
                       </div>
@@ -110,4 +120,4 @@ const Show_Products = () => {
   )
 }
 
-export default Show_Products
+export default Courses

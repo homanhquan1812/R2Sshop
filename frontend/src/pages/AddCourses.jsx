@@ -8,7 +8,7 @@ import '../css/bootstrap.min.css'
 import '../css/site.css'
 import '../css/style.css'
 
-const Add_A_Product = () => {
+const AddCourses = () => {
   const [csw_products, setCswProducts] = useState([])
   const [type, setType] = useState([])
   const [price, setPrice] = useState([])
@@ -38,6 +38,9 @@ const Add_A_Product = () => {
       <Headers></Headers>
       <div class="container">
             <main role="main" class="pb-3">
+            <br />
+            <h2>Thêm khóa học mới:</h2>
+            <br></br>
             <form method="POST" onSubmit={submit}>
               <div className="row mb-3">
                 <label className="col-sm-3 col-form-label">Name</label>
@@ -79,4 +82,4 @@ const Add_A_Product = () => {
   )
 }
 
-export default Add_A_Product
+export default AddCourses

@@ -80,6 +80,9 @@ const Headers = () => {
                                     <a className="nav-link text-dark" href="/courses">Khoá học</a>
                                 </li>
                                 <li className="nav-item">
+                                    <a className="nav-link text-dark" href="/transactions">Giao dịch</a>
+                                </li>
+                                <li className="nav-item">
                         <a className="nav-link text-dark" href="/about">Giới thiệu</a>
                     </li>   
                                 <li className="nav-item">
