@@ -12,6 +12,7 @@ const Register = () => {
   const [username, setUsername] = useState([])
   const [password, setPassword] = useState([])
   const [name, setName] = useState([])
+  const [email, setEmail] = useState([])
   const [registerError, setRegisterError] = useState(false)
   const [registerSuccessful, setRegisterSuccessful] = useState(false)
   const navigateTo = useNavigate()
@@ -21,7 +22,7 @@ const Register = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/register', {
-        name, username, password
+        name, username, password, email
       })
 
       if (response.status == 201) {
@@ -48,22 +49,29 @@ const Register = () => {
             <main role="main" class="pb-3">
             <div>
               <br />
-              <h2>Register</h2>
+              <h2>Đăng ký tài khoản</h2>
+              <br></br>
               <form onSubmit={handleSubmit}>
                 <div className="row mb-3">
-                  <label className="col-sm-3 col-form-label">Name</label>
+                  <label className="col-sm-3 col-form-label">Tên đầy đủ</label>
                   <div className="col-sm-6">
                     <input type="text" className="form-control" name="name" id="name" value={name} onChange={(e) => setName(e.target.value)} />
                   </div>
                 </div>
                 <div className="row mb-3">
-                  <label className="col-sm-3 col-form-label">Username</label>
+                  <label className="col-sm-3 col-form-label">Email</label>
+                  <div className="col-sm-6">
+                    <input type="email" className="form-control" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <label className="col-sm-3 col-form-label">Tài khoản</label>
                   <div className="col-sm-6">
                     <input type="text" className="form-control" name="username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
                   </div>
                 </div>
                 <div className="row mb-3">
-                  <label className="col-sm-3 col-form-label">Password</label>
+                  <label className="col-sm-3 col-form-label">Mật khẩu</label>
                   <div className="col-sm-6">
                     <input type="password" className="form-control" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                   </div>
@@ -71,7 +79,7 @@ const Register = () => {
                 {
                   registerSuccessful && (
                     <div className="alert alert-success alert-dismissible fade show" role="alert">
-                      <strong>Account created successfully. Redirecting to Login!</strong>
+                      <strong>Tạo tài khoản thành công. Đang điều hướng đến trang đăng nhập!</strong>
                       <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" />
                     </div>
                   )
@@ -79,17 +87,17 @@ const Register = () => {
                 {
                   registerError && (
                     <div className="alert alert-warning alert-dismissible fade show" role="alert">
-                      <strong>This username already existed.</strong>
+                      <strong>Tên tài khoản này đã tồn tại, vui lòng chọn tên khác.</strong>
                       <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" />
                     </div>
                   )
                 }
                 <div className="row mb-3">
                   <div className="offset-sm-3 col-sm-3 d-grid">
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button type="submit" className="btn btn-primary">Đăng ký</button>
                   </div>
                   <div className="col-sm-3 d-grid">
-                    <a className="btn btn-outline-primary" href="/" role="button">Cancel</a>
+                    <a className="btn btn-outline-primary" href="/" role="button">Hủy</a>
                   </div>
                 </div>
               </form>

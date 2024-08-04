@@ -17,6 +17,7 @@ const Login = () => {
   const navigateTo = useNavigate()
 
   // This is just to make the limit warning board show up
+  /*
   useEffect(() => {
     if (attempts >= 5) {
       setIsBlocked(true)
@@ -27,6 +28,7 @@ const Login = () => {
       return () => clearTimeout(timer)
     }
   }, [attempts])
+  */
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -58,16 +60,17 @@ const Login = () => {
         <div class="container">
           <main role="main" class="pb-3">
             <br />
-          <h2>Login</h2>
+          <h2>Đăng nhập tài khoản</h2>
+          <br></br>
           <form onSubmit={handleSubmit}>
             <div className="row mb-3">
-              <label className="col-sm-3 col-form-label">Username</label>
+              <label className="col-sm-3 col-form-label">Tài khoản</label>
               <div className="col-sm-6">
                 <input type="text" className="form-control" name="username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
               </div>
             </div>
             <div className="row mb-3">
-              <label className="col-sm-3 col-form-label">Password</label>
+              <label className="col-sm-3 col-form-label">Mật khẩu</label>
               <div className="col-sm-6">
                 <input type="password" className="form-control" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
@@ -90,10 +93,10 @@ const Login = () => {
             }
             <div className="row mb-3">
               <div className="offset-sm-3 col-sm-3 d-grid">
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary">Đăng nhập</button>
               </div>
               <div className="col-sm-3 d-grid">
-                <a className="btn btn-outline-primary" href="/" role="button">Cancel</a>
+                <a className="btn btn-outline-primary" href="/" role="button">Thoát</a>
               </div>
             </div>
           </form>
