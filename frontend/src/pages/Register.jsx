@@ -9,10 +9,11 @@ import '../css/site.css'
 import '../css/style.css'
 
 const Register = () => {
-  const [username, setUsername] = useState([])
-  const [password, setPassword] = useState([])
-  const [name, setName] = useState([])
-  const [email, setEmail] = useState([])
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [full_name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [address, setAddress] = useState('')
   const [registerError, setRegisterError] = useState(false)
   const [registerSuccessful, setRegisterSuccessful] = useState(false)
   const navigateTo = useNavigate()
@@ -21,11 +22,11 @@ const Register = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post('http://localhost:5000/register', {
-        name, username, password, email
+      const response = await axios.post('http://localhost:8080/register', {
+        username, password, full_name, email, address
       })
 
-      if (response.status == 201) {
+      if (response.status == 200) {
         console.log('Added a new user successfully!')
         setRegisterError(false)
         setRegisterSuccessful(true)
@@ -55,7 +56,7 @@ const Register = () => {
                 <div className="row mb-3">
                   <label className="col-sm-3 col-form-label">Tên đầy đủ</label>
                   <div className="col-sm-6">
-                    <input type="text" className="form-control" name="name" id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                    <input type="text" className="form-control" name="name" id="name" value={full_name} onChange={(e) => setName(e.target.value)} />
                   </div>
                 </div>
                 <div className="row mb-3">
@@ -74,6 +75,12 @@ const Register = () => {
                   <label className="col-sm-3 col-form-label">Mật khẩu</label>
                   <div className="col-sm-6">
                     <input type="password" className="form-control" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <label className="col-sm-3 col-form-label">Địa chỉ</label>
+                  <div className="col-sm-6">
+                    <input type="text" className="form-control" name="address" id="address" value={address} onChange={(e) => setAddress(e.target.value)} />
                   </div>
                 </div>
                 {

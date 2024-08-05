@@ -9,15 +9,13 @@ import '../css/site.css'
 import '../css/style.css'
 
 const Login = () => {
-  const [username, setUsername] = useState([])
-  const [password, setPassword] = useState([])
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState(false)
   const [attempts, setAttempts] = useState(0)
   const [isBlocked, setIsBlocked] = useState(false)
   const navigateTo = useNavigate()
 
-  // This is just to make the limit warning board show up
-  /*
   useEffect(() => {
     if (attempts >= 5) {
       setIsBlocked(true)
@@ -28,21 +26,25 @@ const Login = () => {
       return () => clearTimeout(timer)
     }
   }, [attempts])
-  */
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    if (isBlocked) {
+      return
+    }
+
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const response = await axios.post('http://localhost:8080/login', {
         username, password
+      }, {
+        withCredentials: true // This is important for including cookies
       })
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         console.log('Login successful:', response.data)
-        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('user', JSON.stringify(response.data))
         setLoginError(false)
-          
         navigateTo('/')
       }
     } catch (error) {
@@ -54,14 +56,13 @@ const Login = () => {
 
   return (
     <div>
-      <Heads></Heads>
-      <Headers></Headers>
-      <div>
-        <div class="container">
-          <main role="main" class="pb-3">
-            <br />
+      <Heads />
+      <Headers />
+      <div className="container">
+        <main role="main" className="pb-3">
+          <br />
           <h2>Đăng nhập tài khoản</h2>
-          <br></br>
+          <br />
           <form onSubmit={handleSubmit}>
             <div className="row mb-3">
               <label className="col-sm-3 col-form-label">Tài khoản</label>
@@ -75,35 +76,30 @@ const Login = () => {
                 <input type="password" className="form-control" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
             </div>
-            {
-              isBlocked && (
-                <div className="alert alert-warning alert-dismissible fade show" role="alert">
-                  <strong>Too many login attempts from this IP, please try again after 15 minutes.</strong>
-                  <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" />
-                </div>
-              )
-            }    
-            {
-              loginError && (
-                <div className="alert alert-warning alert-dismissible fade show" role="alert">
-                  <strong>Username or password is incorrect.</strong>
-                  <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" />
-                </div>
-              )
-            }
+            {isBlocked && (
+              <div className="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Too many login attempts from this IP, please try again after 15 minutes.</strong>
+                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" />
+              </div>
+            )}    
+            {loginError && (
+              <div className="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Username or password is incorrect.</strong>
+                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" />
+              </div>
+            )}
             <div className="row mb-3">
               <div className="offset-sm-3 col-sm-3 d-grid">
-                <button type="submit" className="btn btn-primary">Đăng nhập</button>
+                <button type="submit" className="btn btn-primary" disabled={isBlocked}>Đăng nhập</button>
               </div>
               <div className="col-sm-3 d-grid">
                 <a className="btn btn-outline-primary" href="/" role="button">Thoát</a>
               </div>
             </div>
           </form>
-          </main>
-        </div>
+        </main>
       </div>
-      <Footers></Footers>
+      <Footers />
     </div>
   )
 }

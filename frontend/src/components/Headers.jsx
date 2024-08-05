@@ -92,6 +92,9 @@ const Headers = () => {
                     <li className="nav-item">
                         <a className="nav-link text-dark" href="/cart">Giỏ hàng</a>
                     </li> 
+                    <li className="nav-item">
+                        <a className="nav-link text-dark" href="/info">Thông tin</a>
+                    </li> 
                     </ul>
                 </div>
                 </div>

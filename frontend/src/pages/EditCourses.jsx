@@ -60,10 +60,6 @@ const EditCourses = () => {
     }
   }
 
-  if (!courseData) {
-    return <div>Loading...</div>
-  }
-
   return (
     <div>
       <Heads />
@@ -73,6 +69,7 @@ const EditCourses = () => {
           <div>
             <br />
             <h2>Chỉnh sửa khóa học:</h2>
+            <br></br>
             <form onSubmit={submit}>
               <div className="row mb-3">
                 <label className="col-sm-3 col-form-label">Tên khoá học</label>

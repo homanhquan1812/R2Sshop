@@ -11,6 +11,7 @@ import Cart from './pages/Cart'
 import CourseDetails from './pages/CourseDetails'
 import Transactions from './pages/Transactions'
 import EditCourses from './pages/EditCourses'
+import Info from './pages/Info'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -60,6 +61,7 @@ function App() {
         <Route path="/transactions" element={<Transactions></Transactions>}></Route>
         <Route path="/courses/add" element={<AddCourses></AddCourses>}></Route>
         <Route path="/courses/edit/:id" element={<EditCourses></EditCourses>}></Route>
+        <Route path="/info/:id" element={<Info></Info>}></Route>
         <Route path="*" element={<Error></Error>}></Route>
       </Routes>
     )

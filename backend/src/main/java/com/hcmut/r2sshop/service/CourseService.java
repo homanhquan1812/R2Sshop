@@ -1,9 +1,6 @@
 package com.hcmut.r2sshop.service;
 
-import com.hcmut.r2sshop.dto.CategoryDto;
 import com.hcmut.r2sshop.dto.CourseDto;
-import com.hcmut.r2sshop.dto.VariantCourseDto;
-import com.hcmut.r2sshop.entity.Course;
 
 import java.util.List;
 
