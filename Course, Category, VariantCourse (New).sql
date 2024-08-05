@@ -1,18 +1,18 @@
 CREATE TABLE category (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT
 );
 
 CREATE TABLE courses (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     category_id INT,
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
 CREATE TABLE variant_courses (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     price DECIMAL(10, 2) NOT NULL,
     duration INT NOT NULL,
     number_of_students INT NOT NULL,
@@ -50,25 +50,25 @@ INSERT INTO courses (id, name, category_id)
 VALUES
 (1, 'NodeJS & ExpressJS', 1),
 (2, 'ReactJS', 2),
-(3, 'Angular', 2),
-(4, 'VueJS', 2),
-(5, 'Django', 1),
-(6, 'Flask', 1),
-(7, 'Spring Boot', 1),
-(8, 'Ruby on Rails', 1),
-(9, 'Laravel', 1),
-(10, 'ASP.NET Core', 1),
-(11, 'Flutter', 3),
-(12, 'React Native', 3),
-(13, 'Swift', 3),
-(14, 'Kotlin', 3),
-(15, 'Unity', 4),
-(16, 'Unreal Engine', 4),
-(17, 'TensorFlow', 5),
-(18, 'PyTorch', 5),
-(19, 'Hadoop', 6),
-(20, 'Spark', 6),
-(21, 'Docker', 7);
+(3, 'Angular', 3),
+(4, 'VueJS', 4),
+(5, 'Django', 5),
+(6, 'Flask', 6),
+(7, 'Spring Boot', 7),
+(8, 'Ruby on Rails', 8),
+(9, 'Laravel', 9),
+(10, 'ASP.NET Core', 10),
+(11, 'Flutter', 11),
+(12, 'React Native', 12),
+(13, 'Swift', 13),
+(14, 'Kotlin', 14),
+(15, 'Unity', 15),
+(16, 'Unreal Engine', 16),
+(17, 'TensorFlow', 17),
+(18, 'PyTorch', 18),
+(19, 'Hadoop', 19),
+(20, 'Spark', 20),
+(21, 'Docker', 21);
 
 INSERT INTO variant_courses (id, price, duration, number_of_students, type, photo, courses_id)
 VALUES

@@ -12,6 +12,11 @@ import '../css/style.css'
 const CourseDetails = () => {
     const { id } = useParams()
     const [courseId, setCourseId] = useState({})
+    const navigateTo = useNavigate()
+
+    const handleAddProduct = () => {
+      navigateTo('/courses')
+    }
 
     useEffect(() => {
         const fetchProductsAPI = async () => {
@@ -43,6 +48,11 @@ const CourseDetails = () => {
     <div>
         <Heads></Heads>
         <Headers></Headers>
+        <div class="container">
+            <main role="main" class="pb-3">
+              <button type="button" className="btn btn-primary" onClick={handleAddProduct}>Tìm khoá học khác</button>
+            </main>
+        </div>
         <div className="text-center" style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         {
             courseId && courseId.category && courseId.variant_courses[0] && (
@@ -66,7 +76,7 @@ const CourseDetails = () => {
                             <a href={`/courses/${courseId.id}`} className="btn btn-danger">Đăng ký khóa học ngay</a>
                             <a href="#" className="btn btn-warning">{courseId.variant_courses[0].price} VND</a>
                             <a href="#" className="btn btn-dark">{courseId.variant_courses[0].number_of_students} học viên đã đăng ký</a>
-                            <a href="#" className="btn btn-success">{courseId.variant_courses[0].type}</a>
+                            <a href="#" className="btn btn-success">{courseId.variant_courses[0].type} - {courseId.variant_courses[0].duration} tháng học</a>
                             </div>
                           </div>
                         </div>

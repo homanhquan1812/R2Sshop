@@ -89,10 +89,13 @@ const Courses = () => {
                             <a href={`/courses/${product.id}`} className="btn btn-primary">Chi tiết khóa học</a>
                           </div>
                           */}
-                          <div style={{position: 'absolute', bottom: '25px', left: 0, right: 0, marginLeft: '50px', textAlign: 'left'}}>
+                          <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(2, 1fr)',
+                            gridTemplateRows: 'repeat(2, auto)',
+                            gap: '10px',
+                            position: 'absolute', bottom: '25px', left: '25px', right: '25px'}}>
                             <a href={`/courses/${product.id}`} className="btn btn-primary">Chi tiết khóa học</a>
-                          </div>
-                          <div style={{position: 'absolute', bottom: '25px', left: 0, right: 0, marginRight: '50px', textAlign: 'right'}}>
                             <a href={`/courses/edit/${product.id}`} className="btn btn-danger">Chỉnh sửa khóa học</a>
                           </div>
                         </div>
@@ -111,6 +114,7 @@ const Courses = () => {
                   </div>
                 ))}
               </div>
+              <br /><br />
               <br /><br />
             </div>
             </main>
