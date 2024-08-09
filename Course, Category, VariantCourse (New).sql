@@ -1,17 +1,18 @@
+/*
 CREATE TABLE category (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT
 );
 
-CREATE TABLE courses (
+CREATE TABLE course (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     category_id INT,
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
-CREATE TABLE variant_courses (
+CREATE TABLE variant_course (
     id INT AUTO_INCREMENT PRIMARY KEY,
     price DECIMAL(10, 2) NOT NULL,
     duration INT NOT NULL,
@@ -93,3 +94,100 @@ VALUES
 (19, 130000, 7, 8, 'Big Data', 'https://topdev.vn/blog/wp-content/uploads/2019/06/Hadoop.jpg', 19),
 (20, 125000, 6, 9, 'Big Data', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk8KLrz1OYfFRDTNayIdRwdanvCy0_Jk8ajg&s', 20),
 (21, 105000, 3, 20, 'DevOps', 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Logo.png', 21);
+*/
+
+CREATE TABLE category (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE course (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    category_id CHAR(36),
+    FOREIGN KEY (category_id) REFERENCES category(id)
+);
+
+CREATE TABLE variant_course (
+    id CHAR(36) PRIMARY KEY,
+    price DECIMAL(10, 2) NOT NULL,
+    duration INT NOT NULL,
+    number_of_students INT NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    photo VARCHAR(255),
+    courses_id CHAR(36),
+    FOREIGN KEY (courses_id) REFERENCES course(id)
+);
+
+INSERT INTO category (id, name, description)
+VALUES
+(UUID(), 'NodeJS & ExpressJS', 'Các khóa học về Node.js và Express.js cho phát triển backend, bao gồm xây dựng ứng dụng web và API.'),
+(UUID(), 'ReactJS', 'Các khóa học về React cho phát triển frontend, tập trung vào việc tạo giao diện người dùng tương tác bằng cách sử dụng các thành phần.'),
+(UUID(), 'Angular', 'Các khóa học về Angular cho phát triển frontend, bao gồm xây dựng ứng dụng web động với một framework toàn diện.'),
+(UUID(), 'VueJS', 'Các khóa học về Vue.js cho phát triển frontend, tập trung vào việc xây dựng giao diện người dùng và ứng dụng một trang với framework dễ tiếp cận.'),
+(UUID(), 'Django', 'Các khóa học về Django cho phát triển backend bằng Python, nhấn mạnh vào việc phát triển nhanh và thiết kế sạch.'),
+(UUID(), 'Flask', 'Các khóa học về Flask cho phát triển backend với Python, nổi bật với sự đơn giản và linh hoạt trong việc xây dựng ứng dụng web.'),
+(UUID(), 'Spring Boot', 'Các khóa học về Spring Boot cho phát triển backend với Java, tập trung vào việc tạo ứng dụng sẵn sàng sản xuất một cách dễ dàng.'),
+(UUID(), 'Ruby on Rails', 'Các khóa học về Ruby on Rails cho phát triển backend, bao gồm một framework toàn diện để xây dựng ứng dụng web dựa trên cơ sở dữ liệu.'),
+(UUID(), 'Laravel', 'Các khóa học về Laravel cho phát triển backend với PHP, nhấn mạnh vào cú pháp thanh lịch và các công cụ thân thiện với nhà phát triển.'),
+(UUID(), 'ASP.NET Core', 'Các khóa học về ASP.NET Core cho việc xây dựng ứng dụng web đa nền tảng với hiệu suất cao và các tính năng hiện đại.'),
+(UUID(), 'Flutter', 'Các khóa học về Flutter cho phát triển ứng dụng natively compiled cho di động, web và desktop từ một mã nguồn duy nhất.'),
+(UUID(), 'React Native', 'Các khóa học về React Native cho việc xây dựng ứng dụng di động bằng JavaScript, cho phép phát triển đa nền tảng.'),
+(UUID(), 'Swift', 'Các khóa học về Swift cho phát triển ứng dụng iOS và macOS, tập trung vào việc tạo ứng dụng hiệu suất cao cho các nền tảng của Apple.'),
+(UUID(), 'Kotlin', 'Các khóa học về Kotlin cho phát triển Android, cung cấp một ngôn ngữ lập trình hiện đại cho việc xây dựng ứng dụng di động.'),
+(UUID(), 'Unity', 'Các khóa học về Unity cho phát triển game, cung cấp công cụ để tạo ra các trò chơi hấp dẫn trên nhiều nền tảng.'),
+(UUID(), 'Unreal Engine', 'Các khóa học về Unreal Engine cho phát triển game, tập trung vào đồ họa chất lượng cao và cơ chế game phức tạp.'),
+(UUID(), 'TensorFlow', 'Các khóa học về TensorFlow cho học máy, cung cấp công cụ để xây dựng và đào tạo các mạng nơ-ron.'),
+(UUID(), 'PyTorch', 'Các khóa học về PyTorch cho học sâu, tập trung vào việc xây dựng và đào tạo các mạng nơ-ron với một framework linh hoạt.'),
+(UUID(), 'Hadoop', 'Các khóa học về Hadoop cho big data, bao gồm lưu trữ và xử lý dữ liệu phân tán với các cụm phần cứng.'),
+(UUID(), 'Spark', 'Các khóa học về Apache Spark cho xử lý big data, tập trung vào việc phân tích dữ liệu lớn với tốc độ nhanh và bộ nhớ trong.'),
+(UUID(), 'Docker', 'Các khóa học về Docker cho container hóa, cho phép đóng gói và triển khai ứng dụng trong các môi trường cô lập.');
+
+INSERT INTO courses (id, name, category_id)
+VALUES
+(UUID(), 'NodeJS & ExpressJS', UUID()),
+(UUID(), 'ReactJS', UUID()),
+(UUID(), 'Angular', UUID()),
+(UUID(), 'VueJS', UUID()),
+(UUID(), 'Django', UUID()),
+(UUID(), 'Flask', UUID()),
+(UUID(), 'Spring Boot', UUID()),
+(UUID(), 'Ruby on Rails', UUID()),
+(UUID(), 'Laravel', UUID()),
+(UUID(), 'ASP.NET Core', UUID()),
+(UUID(), 'Flutter', UUID()),
+(UUID(), 'React Native', UUID()),
+(UUID(), 'Swift', UUID()),
+(UUID(), 'Kotlin', UUID()),
+(UUID(), 'Unity', UUID()),
+(UUID(), 'Unreal Engine', UUID()),
+(UUID(), 'TensorFlow', UUID()),
+(UUID(), 'PyTorch', UUID()),
+(UUID(), 'Hadoop', UUID()),
+(UUID(), 'Spark', UUID()),
+(UUID(), 'Docker', UUID());
+
+INSERT INTO variant_courses (id, price, duration, number_of_students, type, photo, courses_id)
+VALUES
+(UUID(), 100000, 2, 30, 'Backend', 'https://i.ytimg.com/vi/Oe421EPjeBE/maxresdefault.jpg', UUID()),
+(UUID(), 80000, 3, 25, 'Frontend', 'https://s3-sgn09.fptcloud.com/codelearnstorage/Upload/Blog/react-js-co-ban-phan-1-63738082145.3856.jpg', UUID()),
+(UUID(), 90000, 4, 20, 'Frontend', 'https://d585tldpucybw.cloudfront.net/sfimages/default-source/blogs/2023/2023-11/angular-logo-1200-628.png?sfvrsn=bf64b1ee_3', UUID()),
+(UUID(), 75000, 3, 22, 'Frontend', 'https://mevn-public.s3-ap-southeast-1.amazonaws.com/marketenterprise.vn/wp-images/2021/04/06170614/vuejs.png', UUID()),
+(UUID(), 95000, 5, 18, 'Backend', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9XeELcp51xMR6GcbG86ssM_CLpG0QqiN9dw&s', UUID()),
+(UUID(), 70000, 2, 20, 'Backend', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXXz9sK7EvyDicWnQ60W9RMFSzzZ0nReybQw&s', UUID()),
+(UUID(), 110000, 6, 15, 'Backend', 'https://photo2.tinhte.vn/data/attachment-files/2021/04/5423466_Spring_Boot_la_gi_2.png', UUID()),
+(UUID(), 100000, 4, 17, 'Backend', 'https://upload.wikimedia.org/wikipedia/commons/6/62/Ruby_On_Rails_Logo.svg', UUID()),
+(UUID(), 85000, 4, 23, 'Backend', 'https://picperf.io/https://laravelnews.s3.amazonaws.com/images/laravel-featured.png', UUID()),
+(UUID(), 105000, 5, 16, 'Backend', 'https://imic.edu.vn/Contents/images/news/khoa-hoc-lap-trinh-hoc-asp-net-core-tai-imic.png', UUID()),
+(UUID(), 90000, 3, 21, 'Mobile', 'https://api.reliasoftware.com/uploads/what_is_flutter_fcb6c7a4b8.png', UUID()),
+(UUID(), 95000, 3, 19, 'Mobile', 'https://images.ctfassets.net/aq13lwl6616q/2gqVi4hhjq9vgvdh63UoKZ/c763c6f7e98a80eb2800bbe5eb9d690d/react_native_zero_to_mastery.png', UUID()),
+(UUID(), 85000, 4, 20, 'Mobile', 'https://www.fullsail.edu/assets/ext/share/mobile-development-degree-an-early-adopter-of-apples-swift-programming-language-hero.jpg', UUID()),
+(UUID(), 90000, 4, 18, 'Mobile', 'https://topdev.vn/blog/wp-content/uploads/2023/05/kotlin-la-gi-1.png', UUID()),
+(UUID(), 95000, 6, 14, 'Game Development', 'https://cdn.geekwire.com/wp-content/uploads/2023/09/09-2023_Blog_Hero-image_Penguin_Option-3-1230x410-1.jpeg', UUID()),
+(UUID(), 100000, 6, 12, 'Game Development', 'https://bairesdev.mo.cloudinary.net/blog/2022/08/ue-logo-1400x788-1400x788-8f185e1e3635-1.jpg?tx=w_1920,q_auto', UUID()),
+(UUID(), 120000, 5, 10, 'Data Science', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEsqbuvRgmIsxTT1R_bCdv8txFKkw2ylx5Lg&s', UUID()),
+(UUID(), 115000, 5, 11, 'Data Science', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmkiVt1AvK6s2mToxnmLk_kcp10WU3l03iGg&s', UUID()),
+(UUID(), 130000, 7, 8, 'Big Data', 'https://topdev.vn/blog/wp-content/uploads/2019/06/Hadoop.jpg', UUID()),
+(UUID(), 125000, 6, 9, 'Big Data', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk8KLrz1OYfFRDTNayIdRwdanvCy0_Jk8ajg&s', UUID()),
+(UUID(), 105000, 3, 20, 'DevOps', 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Logo.png', UUID());
