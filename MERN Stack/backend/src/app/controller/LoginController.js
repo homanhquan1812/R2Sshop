@@ -33,7 +33,25 @@ class LoginController
                     })
                 }
 
-                const token = jwt.sign({ id: userMatch._id, username: userMatch.username, name: userMatch.name, role: userMatch.role, }, process.env.SECRET_KEY, { expiresIn: '1h' })
+                const cartItems = userMatch.cart.items.map(item => ({
+                    id: item._id,
+                    name: item.name, 
+                    price: item.price,
+                    photo: item.photo
+                }))
+
+                const token = jwt.sign({
+                    id: userMatch._id, 
+                    username: userMatch.username, 
+                    name: userMatch.name, 
+                    email: userMatch.email, 
+                    phonenumber: userMatch.phonenumber, 
+                    role: userMatch.role,
+                    cart: {
+                        items: cartItems,
+                        totalPrice: userMatch.cart.totalPrice
+                    }
+                }, process.env.SECRET_KEY, { expiresIn: '1h' })
 
                 req.session.loginPassed = true
 
@@ -44,8 +62,7 @@ class LoginController
                     user: {
                         id: userMatch._id,
                         username: userMatch.username,
-                        name: userMatch.name,
-                        role: userMatch.role
+                        name: userMatch.name
                     }
                 })
             } 
@@ -60,7 +77,14 @@ class LoginController
                     })
                 }
 
-                const token = jwt.sign({ id: adminMatch._id, username: adminMatch.username, name: adminMatch.name, role: adminMatch.role, }, process.env.SECRET_KEY, { expiresIn: '1h' })
+                const token = jwt.sign({
+                    id: adminMatch._id, 
+                    username: adminMatch.username, 
+                    name: adminMatch.name, 
+                    phonenumber: adminMatch.phonenumber,
+                    email: adminMatch.email,
+                    role: adminMatch.role
+                }, process.env.SECRET_KEY, { expiresIn: '1h' })
 
                 req.session.loginPassed = true
 
@@ -71,8 +95,7 @@ class LoginController
                     user: {
                         id: adminMatch._id,
                         username: adminMatch.username,
-                        name: adminMatch.name,
-                        name: adminMatch.role
+                        name: adminMatch.name
                     }
                 })
             }

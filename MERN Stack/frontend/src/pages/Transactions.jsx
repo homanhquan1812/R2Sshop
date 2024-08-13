@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { jwtDecode } from "jwt-decode"
 import Heads from '../components/Heads'
 import Headers from '../components/Headers'
 import Footers from '../components/Footers'
@@ -9,6 +9,84 @@ import '../css/site.css'
 import '../css/style.css'
 
 const Transactions = () => {
+  const { id } = useParams()
+  const [username, setUsername] = useState('')
+  const [name, setName] = useState('')
+  const [role, setRole] = useState('')
+  const [userId, setUserId] = useState('')
+  const [orders, setOrders] = useState([])
+  const [userOrders, setUserOrders] = useState([])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+        if (token) {
+            const decodedToken = jwtDecode(token)
+            {/*
+            console.log('Decoded Token:', decodedToken)
+
+            const userId = decodedToken.id
+            const username = decodedToken.username
+            const name = decodedToken.name
+            const role = decodedToken.role
+
+            console.log('User ID:', userId)
+            console.log('Username:', username)
+            console.log('Name:', name)
+            console.log('Role:', role) 
+            */}
+
+            setRole(decodedToken.role)
+            setUserId(decodedToken.id)
+            setName(decodedToken.name)
+            setUsername(decodedToken.username)
+        }
+
+        // For Admin's transactions
+        const fetchData = async () => {
+          try {
+            const response = await fetch('http://localhost:5000/order')
+    
+            if (response.status === 200) {
+              const data = await response.json()
+              setOrders(data.orders)
+              console.log(orders)
+              console.log('Got data successfully.')
+            }
+          } catch (error) {
+            console.error(error)
+          }
+        }
+
+        // For specific user's transactions
+        const fetchData2 = async () => {
+          try {
+            const response = await fetch('http://localhost:5000/order')
+    
+            if (response.status === 200) {
+              const data = await response.json()
+              const userOrders = data.orders.filter(order => order.name === name)
+              setUserOrders(userOrders)
+              console.log(userOrders)
+              console.log('Got data successfully.')
+            }
+          } catch (error) {
+            console.error(error)
+          }
+        }
+    
+        fetchData()
+    
+        fetchData2()
+
+        const intervalId = setInterval(() => {
+          fetchData()
+          fetchData2()
+        }, 6000) // 60 seconds
+    
+        return () => clearInterval(intervalId)
+  }, [name]) // Add this or else the page will get blank
+
   return (
     <div>
       <Heads></Heads>
@@ -17,52 +95,123 @@ const Transactions = () => {
         <main role="main" class="pb-3">
           <div>
             <br></br>
-            <h2>Lịch sử giao dịch:</h2>
-      <div id="container" style={{marginTop: '200px'}}>
-        <div className="printing-history-box">
-        <div className="table-container">
-            <table className="content-table">
-            <thead>
-                <tr>
-                <th>Order Date</th>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Total cost</th>
-                <th>Status</th>
-                </tr>
-            </thead>
-            <tbody><tr>
-                <td>{'{'}{'{'}this.createdAt{'}'}{'}'}</td>
-                <td>
-                    {'{'}{'{'}#each this.products{'}'}{'}'}
-                    {'{'}{'{'}this.name{'}'}{'}'}
-                    {'{'}{'{'}#unless @last{'}'}{'}'}<br /><hr /> {'{'}{'{'}/unless{'}'}{'}'}
-                    {'{'}{'{'}/each{'}'}{'}'}
-                </td>
-                <td>
-                    {'{'}{'{'}#each this.products{'}'}{'}'}
-                    {'{'}{'{'}this.qty{'}'}{'}'}
-                    {'{'}{'{'}#unless @last{'}'}{'}'}<br /><hr /> {'{'}{'{'}/unless{'}'}{'}'}
-                    {'{'}{'{'}/each{'}'}{'}'}
-                </td>
-                <td>{'{'}{'{'}this.totalcost{'}'}{'}'}</td>
-                <td>
-                    {'{'}{'{'}#if (isBool this.declined true){'}'}{'}'}
-                    <button type="button" className="btn btn-danger">Declined</button>
-                    {'{'}{'{'}else{'}'}{'}'}
-                    {'{'}{'{'}#if (isBool this.delivered true){'}'}{'}'}
-                    <button type="button" className="btn btn-success">Delivered</button>
-                    {'{'}{'{'}else{'}'}{'}'}
-                    <button type="button" className="btn btn-warning">Processing</button>
-                    {'{'}{'{'}/if{'}'}{'}'}
-                    {'{'}{'{'}/if{'}'}{'}'}
-                </td>
-                </tr><tr />
-            </tbody>
-            </table>
-        </div>
-        </div>
-    </div>
+            {
+              role == 'User' ? (
+                <>
+                <h2>Lịch sử giao dịch:</h2>
+                  <div id="container" style={{marginTop: '50px'}}>
+                    <div className="printing-history-box">
+                    <div className="table-container">
+                        <table className="content-table">
+                        <thead>
+                            <tr>
+                            <th>Ngày đặt</th>
+                            <th>Khoá học</th>
+                            <th>Tổng giá tiền</th>
+                            <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {
+                            userOrders.map((order, index) => (
+                              (order.cart.items.length > 0) ? (
+                                <tr key={index}>
+                                <td>{order.createdAt}</td>
+                                {/* <td>{order.cart.items[0]?.name}</td> */}
+                                {
+                                  order.cart.items.map((item, index) => (
+                                    <div key={index} style={{marginTop: '20px', marginBottom: '20px'}}>
+                                      {item.name}
+                                    </div>
+                                  ))
+                                }
+                                <td>{order.cart.totalPrice}</td>
+                                <td>
+                                  {order.status ? (
+                                    <button type="button" className="btn btn-success">Thành công</button>
+                                  ) : (
+                                    <button type="button" className="btn btn-danger">Thất bại</button>
+                                  )}
+                                  {/* 
+                                    ) : order.status === 'true' ? (
+                                    <button type="button" className="btn btn-success">Delivered</button>
+                                  ) : (
+                                    <button type="button" className="btn btn-warning">Processing</button>
+                                  )} */}
+                                </td>
+                              </tr>
+                              ) : (
+                                <td colSpan={4}>Bạn chưa đăng kí khóa nào</td>
+                              )
+                            ))
+                          }
+                        </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+                </>
+              ) : (
+                <>
+                <h2>Tất cả đơn hàng:</h2>
+                <div id="container" style={{marginTop: '50px'}}>
+                    <div className="printing-history-box">
+                    <div className="table-container">
+                        <table className="content-table">
+                        <thead>
+                            <tr>
+                            <th>Tên học viên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Ngày đặt</th>
+                            <th>Khoá học</th>
+                            <th>Tổng giá tiền</th>
+                            <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {
+                            orders.map((order, index) => (
+                              (order.cart.items.length > 0) && (
+                                <tr key={index}>
+                                <td>{order.name}</td>
+                                <td>{order.email}</td>
+                                <td>{order.phonenumber}</td>
+                                <td>{order.createdAt}</td>
+                                {/* <td>{order.cart.items[0]?.name}</td> */}
+                                {
+                                  order.cart.items.map((item, index) => (
+                                    <div key={index} style={{marginTop: '20px', marginBottom: '20px'}}>
+                                      {item.name}
+                                    </div>
+                                  ))
+                                }
+                                <td>{order.cart.totalPrice}</td>
+                                <td>
+                                  {order.status ? (
+                                    <button type="button" className="btn btn-success">Thành công</button>
+                                  ) : (
+                                    <button type="button" className="btn btn-danger">Thất bại</button>
+                                  )}
+                                  {/* 
+                                    ) : order.status === 'true' ? (
+                                    <button type="button" className="btn btn-success">Delivered</button>
+                                  ) : (
+                                    <button type="button" className="btn btn-warning">Processing</button>
+                                  )} */}
+                                </td>
+                              </tr>
+                              )
+                            ))
+                          }
+                        </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+                </>
+              )
+            }
           </div>
         </main>
       </div>

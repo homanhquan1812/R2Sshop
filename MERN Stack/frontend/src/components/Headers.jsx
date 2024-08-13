@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { jwtDecode } from "jwt-decode"
 
 const Headers = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [role, setRole] = useState([])
+    const [userId, setUserId] = useState([])
 
     const isJwtExpired = (token) => {
         if (!token) return true
@@ -19,6 +22,29 @@ const Headers = () => {
     }
 
     useEffect(() => {
+        // Token information
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            const decodedToken = jwtDecode(token)
+            {/*
+            console.log('Decoded Token:', decodedToken)
+
+            const userId = decodedToken.id
+            const username = decodedToken.username
+            const name = decodedToken.name
+            const role = decodedToken.role
+
+            console.log('User ID:', userId)
+            console.log('Username:', username)
+            console.log('Name:', name)
+            console.log('Role:', role) 
+            */}
+
+            setRole(decodedToken.role)
+            setUserId(decodedToken.id)
+        }
+
         const checkLoginStatus = () => {
             const token = localStorage.getItem('token')
             if (token && !isJwtExpired(token)) {
@@ -60,14 +86,26 @@ const Headers = () => {
                                     <a className="nav-link text-dark" href="/courses">Khoá học</a>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link text-dark" href="/transactions">Giao dịch</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link text-dark" href="/info">Thông tin</a>
+                                    <a className="nav-link text-dark" href={`/info/${userId}`}>Thông tin</a>
                                 </li>  
-                                <li className="nav-item">
-                                    <a className="nav-link text-dark" href="/cart">Giỏ hàng</a>
-                                </li> 
+                                {
+                                    role == 'User' ? (
+                                        <>
+                                            <li className="nav-item">
+                                                <a className="nav-link text-dark" href="/cart">Giỏ hàng</a>
+                                            </li> 
+                                            <li className="nav-item">
+                                                <a className="nav-link text-dark" href="/transactions">Giao dịch</a>
+                                            </li>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <li className="nav-item">
+                                                <a className="nav-link text-dark" href="/transactions">Đơn hàng</a>
+                                            </li> 
+                                        </>
+                                    )
+                                }
                                 <li className="nav-item">
                                     <a className="nav-link text-dark" href="/about">Giới thiệu</a>
                                 </li>

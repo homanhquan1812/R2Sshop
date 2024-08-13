@@ -1,4 +1,5 @@
 const Courses = require('../model/Courses')
+const Users = require('../model/Users')
 const { mongooseToObject, multipleMongooseToObject } = require('../../util/mongoose')
 
 class CourseController
@@ -43,6 +44,23 @@ class CourseController
     }
 
     /*
+     * 2. Get all courses registered by user
+    */
+    // [GET] /course/courseregistered
+    async getAllCoursesRegistered(req, res, next)
+    {
+        try {        
+            const userId = await Users.find({}, 'cart name username')
+
+            res.status(200).json({
+                userId: multipleMongooseToObject(userId)
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    /*
      * 3. Add a course
     */
     // [POST] /course/add
@@ -66,11 +84,9 @@ class CourseController
     // [PUT] /course/edit/:id
     async putACourse(req, res, next) {
         try {
-            const { name, type, description, price, duration, photo, number_of_students } = req.body
+            const { name, type, description, price, duration, photo } = req.body
 
-            await Courses.findByIdAndUpdate(req.params.id, {
-                name, type, description, price, duration, photo, number_of_students
-            })
+            await Courses.findByIdAndUpdate(req.params.id, req.body)
             
             res.status(200).json({
                 message: "Course updated successfully!"

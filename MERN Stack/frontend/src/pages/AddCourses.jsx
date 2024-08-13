@@ -22,10 +22,8 @@ const AddCourses = () => {
 
     try {
       const number_of_students = 0
-      const response = await axios.post('http://localhost:8080/courses', {
-        name,
-        category: { name, description },
-        variant_courses: [{ type, price, number_of_students, duration, photo }]
+      const response = await axios.post('http://localhost:5000/course/add', {
+        name, description, type, price, number_of_students: 0, duration, photo
       })
 
       if (response.status === 201) {

@@ -52,6 +52,7 @@ const Courses = () => {
 
     if (token) {
       const decodedToken = jwtDecode(token)
+      {/*
       console.log('Decoded Token:', decodedToken)
 
       const userId = decodedToken.id
@@ -62,7 +63,8 @@ const Courses = () => {
       console.log('User ID:', userId)
       console.log('Username:', username)
       console.log('Name:', name)
-      console.log('Role:', role)
+      console.log('Role:', role) 
+      */}
 
       setRole(decodedToken.role)
     }

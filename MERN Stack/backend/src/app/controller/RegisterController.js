@@ -10,7 +10,7 @@ class RegisterController
     async register(req, res, next)
     {
         try {
-            const { name, username, password, key } = req.body
+            const { name, username, password, key, email, phonenumber } = req.body
             const userCheck = await Users.findOne({ username: username })
             const adminCheck = await Admins.findOne({ username: username })
 
@@ -28,7 +28,7 @@ class RegisterController
                 const hashedPassword = await bcrypt.hash(password, saltRounds);
                 // User role
                 const role = 'User'
-                const newUser = new Users({ name, username, password: hashedPassword, role });
+                const newUser = new Users({ name, username, password: hashedPassword, role, email, phonenumber });
                 await newUser.save()
 
                 res.status(201).json({
@@ -41,7 +41,7 @@ class RegisterController
                 const hashedPassword = await bcrypt.hash(password, saltRounds);
                 // Admin role
                 const role = 'Admin'
-                const newUser = new Admins({ name, username, password: hashedPassword, role });
+                const newUser = new Admins({ name, username, password: hashedPassword, role, email, phonenumber });
                 await newUser.save()
 
                 res.status(201).json({

@@ -12,6 +12,7 @@ import CourseDetails from './pages/CourseDetails'
 import Transactions from './pages/Transactions'
 import EditCourses from './pages/EditCourses'
 import Info from './pages/Info'
+import Success from './pages/Success'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -77,6 +78,7 @@ function App() {
         <Route path="/courses/add" element={<AddCourses></AddCourses>}></Route>
         <Route path="/courses/edit/:id" element={<EditCourses></EditCourses>}></Route>
         <Route path="/info/:id" element={<Info></Info>}></Route>
+        <Route path="/success" element={<Success></Success>}></Route>
         <Route path="*" element={<Error></Error>}></Route>
       </Routes>
     )

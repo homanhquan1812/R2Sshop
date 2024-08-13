@@ -12,6 +12,8 @@ const Register = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phonenumber, setPhoneNumber] = useState('')
   const [key, setKey] = useState('')
   const [registerError, setRegisterError] = useState(false)
   const [registerSuccessful, setRegisterSuccessful] = useState(false)
@@ -22,7 +24,7 @@ const Register = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/register', {
-        username, password, name, key
+        username, password, name, key, phonenumber, email
       })
 
       if (response.status == 201) {
@@ -56,6 +58,18 @@ const Register = () => {
                   <label className="col-sm-3 col-form-label">Tên đầy đủ</label>
                   <div className="col-sm-6">
                     <input type="text" className="form-control" name="name" id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <label className="col-sm-3 col-form-label">Email</label>
+                  <div className="col-sm-6">
+                    <input type="email" className="form-control" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <label className="col-sm-3 col-form-label">Số điện thoại</label>
+                  <div className="col-sm-6">
+                    <input type="text" className="form-control" name="phonenumber" id="phonenumber" value={phonenumber} onChange={(e) => setPhoneNumber(e.target.value)} />
                   </div>
                 </div>
                 <div className="row mb-3">

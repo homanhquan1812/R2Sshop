@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react'
 import axios from 'axios'
+import { jwtDecode } from "jwt-decode"
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import Heads from '../components/Heads'
@@ -12,13 +13,117 @@ import '../css/style.css'
 const CourseDetails = () => {
     const { id } = useParams()
     const [courseId, setCourseId] = useState([])
+    const [username, setUsername] = useState('')
+    const [name, setName] = useState('')
+    const [phonenumber, setPhoneNumber] = useState('')
+    const [email, setEmail] = useState('')
+    const [cart, setCart] = useState({
+      items: [],
+      totalPrice: 0
+    })
+    const [role, setRole] = useState('')
+    const [userId, setUserId] = useState('')
     const navigateTo = useNavigate()
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+  
+    const isJwtExpired = (token) => {
+      if (!token) return true
+      const parts = token.split('.')
+      if (parts.length !== 3) return true
+      try {
+          const payload = JSON.parse(atob(parts[1]))
+          if (!payload.exp) return false
+          const currentTime = Math.floor(Date.now() / 1000)
+          return payload.exp < currentTime
+      } catch (error) {
+          console.error('Error decoding token:', error)
+          return true
+      }
+    }
 
     const handleAddProduct = () => {
       navigateTo('/courses')
     }
 
+    const loginDirect = () => {
+      navigateTo('/login')
+    }
+
+    const addCourse = async() => {
+      try {
+        const token = localStorage.getItem('token')
+
+        let decodedToken
+
+        if (token) {
+            decodedToken = jwtDecode(token)
+
+            setUserId(decodedToken.id)
+        }
+
+        const response = await axios.post(`http://localhost:5000/${import.meta.env.VITE_APP_API_KEY}/addcourse`, {
+          id: decodedToken.id,
+          name: courseId.name,
+          price: courseId.price,
+          photo: courseId.photo
+        })
+
+        if (response.data.token) {
+          localStorage.setItem('token', response.data.token)
+          const decodedToken = jwtDecode(response.data.token)
+          setRole(decodedToken.role)
+          setUserId(decodedToken.id)
+          setName(decodedToken.name)
+          setPhoneNumber(decodedToken.phonenumber)
+          setEmail(decodedToken.email)
+          setUsername(decodedToken.username)
+          setCart({
+            items: decodedToken.cart.items,
+            totalPrice: decodedToken.cart.totalPrice
+          })
+        }
+
+        if (response.status === 201) {
+          console.log('Course added to cart successfully.')
+          navigateTo('/cart')
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     useEffect(() => {
+      const token = localStorage.getItem('token')
+
+        if (token) {
+            const decodedToken = jwtDecode(token)
+            {/*
+            console.log('Decoded Token:', decodedToken)
+
+            const userId = decodedToken.id
+            const username = decodedToken.username
+            const name = decodedToken.name
+            const role = decodedToken.role
+
+            console.log('User ID:', userId)
+            console.log('Username:', username)
+            console.log('Name:', name)
+            console.log('Role:', role) 
+            */}
+
+            setRole(decodedToken.role)
+            setUserId(decodedToken.id)
+            setName(decodedToken.name)
+            setPhoneNumber(decodedToken.phonenumber)
+            setEmail(decodedToken.email)
+            setUsername(decodedToken.username)
+            setCart({
+              items: decodedToken.cart.items,
+              totalPrice: decodedToken.cart.totalPrice
+            })
+        }
+
         const fetchProductsAPI = async () => {
           try {
             const response = await fetch(`http://localhost:5000/course/edit/${id}`)
@@ -35,10 +140,23 @@ const CourseDetails = () => {
         }
     
         fetchProductsAPI()
+
+        const checkLoginStatus = () => {
+          const token = localStorage.getItem('token')
+          if (token && !isJwtExpired(token)) {
+              setIsLoggedIn(true)
+          } else {
+              setIsLoggedIn(false)
+              localStorage.removeItem('token')
+          }
+      }
+
+      checkLoginStatus()
     
         // Fetch data every 2 seconds
         const intervalId = setInterval(() => {
           fetchProductsAPI()
+          checkLoginStatus()
         }, 2000)
     
         return () => clearInterval(intervalId)
@@ -73,7 +191,13 @@ const CourseDetails = () => {
                             gridTemplateRows: 'repeat(2, auto)',
                             gap: '10px'
                             }}>
-                            <a href={`/courses/${courseId.id}`} className="btn btn-danger">Đăng ký khóa học ngay</a>
+                            {
+                              isLoggedIn ? (
+                                <button type='button' onClick={addCourse} className="btn btn-danger">Đăng ký khóa học ngay</button>
+                              ) : (
+                                <button type='button' onClick={loginDirect} className="btn btn-danger">Đăng ký khóa học ngay</button>
+                              )
+                            }
                             <a href="#" className="btn btn-warning">{courseId.price} VND</a>
                             <a href="#" className="btn btn-dark">{courseId.number_of_students} học viên đã đăng ký</a>
                             <a href="#" className="btn btn-success">{courseId.type} - {courseId.duration} tháng học</a>

@@ -7,27 +7,24 @@ const DetailedCourse = new Schema({
     /*
     courseId: {
         type: mongoose.Types.ObjectId,
-        ref: 'courses',
         required: true
     },
     */
-    name: { type: String, ref: 'courses', maxLength: 255, required: true },
-    price: { type: Number, ref: 'courses', maxLength: 255, required: true },
-    photo: { type: String, ref: 'courses', required: true }
-    // createdAt: { type: Date, default: Date.now }
+    name: { type: String, maxLength: 255, required: true },
+    price: { type: Number, maxLength: 255, required: true },
+    photo: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
 })
 
-const Users = new Schema({
+const Orders = new Schema({
     name: { type: String, maxLength: 255, required: true },
     email: { type: String, maxLength: 255, required: true },
     phonenumber: { type: String, maxLength: 255, required: true },
-    username: { type: String, maxLength: 255, required: true },
-    password: { type: String, maxLength: 255, required: true },
-    role: { type: String, maxLength: 255, required: true },
     cart: {
         items: [DetailedCourse], 
         totalPrice: { type: Number, default: 0 }
-    }
+    },
+    status: { type: Boolean, required: true }
 }, { timestamps: true });
 
 /*
@@ -37,4 +34,4 @@ user.plugin(mongoose_delete, {
 });
 */
 
-module.exports = mongoose.model('users', Users)
+module.exports = mongoose.model('orders', Orders)

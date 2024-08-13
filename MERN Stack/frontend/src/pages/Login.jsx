@@ -44,7 +44,8 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log('Login successful:', response.data)
-        localStorage.setItem('token', JSON.stringify(response.data))
+        const { token } = response.data
+        localStorage.setItem('token', token)
         setLoginError(false)
         navigateTo('/')
       }
