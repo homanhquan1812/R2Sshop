@@ -54,9 +54,7 @@ const About = () => {
         <br></br>
         <h1 className="display-4">Credits</h1>
         <br></br>
-        <p style={{fontSize: '17px'}}>1. Trần Xuân Trúc (Frontend + Backend).</p>
-        <p style={{fontSize: '17px'}}>2. Trương Toàn Khiêm (Backend).</p>
-        <p style={{fontSize: '17px'}}>3. Hoàng Minh Khôi (Backend).</p>
+        <p style={{fontSize: '17px'}}>R2Sshop website made by Hồ Mạnh Quân (Frontend + Backend).</p>
         <br></br>
         <br></br>
         <br></br>
