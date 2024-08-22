@@ -7,6 +7,7 @@ class LoginController
 {
     // [POST] /login
     async login(req, res, next) {
+        // For Express rate limit
         req.session.loginPassed = false
 
         const { username, password } = req.body
@@ -15,24 +16,61 @@ class LoginController
             // Find a user/admin
             const userMatch = await Users.findOne({ username: username })
             const adminMatch = await Admins.findOne({ username: username })
+            const userLogin = userMatch || adminMatch
             
-            if (!userMatch && !adminMatch) {
+            // Check if account exists
+            if (!userLogin) {
                 return res.status(401).json({
-                    message: 'This username doesn\'t exists.'
+                    message: 'This username doesn\'t exist.'
                 })
             }
 
+            // Check password
+            const isMatch = await bcrypt.compare(password, userLogin.password)
+
+            if (!isMatch) {
+                return res.status(401).json({
+                    message: 'Password is incorrect.'
+                })
+            }
+
+            // Add user's cart into session
+            if (userMatch) {
+                req.session.cart = userMatch.cart
+            }
+
+            const token = jwt.sign({
+                id: userLogin.id,
+                username: userLogin.username,
+                name: userLogin.name, 
+                email: userLogin.email, 
+                phonenumber: userLogin.phonenumber, 
+                role: userLogin.role
+            }, process.env.SECRET_KEY, { expiresIn: '1h' })
+
+            // Store variables for session
+            req.session.loginPassed = true
+            req.session.token = token
+
+            req.session.userLoginId = userLogin.id
+            req.session.userLoginRole = userLogin.role
+
+            res.status(200).json({
+                message: 'Login successful',
+                token: token,
+                user: {
+                    id: userLogin.id,
+                    username: userLogin.username,
+                    name: userLogin.name, 
+                    email: userLogin.email, 
+                    phonenumber: userLogin.phonenumber, 
+                    role: userLogin.role
+                }
+            })
+
+            /* Old method got JWT size issue
             // User username found
             if (userMatch) {
-                // Check user's password
-                const isMatch = await bcrypt.compare(password, userMatch.password)
-
-                if (!isMatch) {
-                    return res.status(401).json({
-                        message: 'Password is incorrect.'
-                    })
-                }
-
                 const cartItems = userMatch.cart.items.map(item => ({
                     id: item._id,
                     name: item.name, 
@@ -68,15 +106,6 @@ class LoginController
             } 
             // Admin username found
             else if (adminMatch) {
-                // Check admin's password
-                const isMatch = await bcrypt.compare(password, adminMatch.password)
-
-                if (!isMatch) {
-                    return res.status(401).json({
-                        message: 'Password is incorrect.'
-                    })
-                }
-
                 const token = jwt.sign({
                     id: adminMatch._id, 
                     username: adminMatch.username, 
@@ -99,6 +128,7 @@ class LoginController
                     }
                 })
             }
+            */
         } catch (error) {
             next(error)
         }

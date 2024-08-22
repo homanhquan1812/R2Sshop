@@ -85,23 +85,16 @@ const Headers = () => {
                                 <li className="nav-item">
                         <a className="nav-link text-dark" href="/about">Giới thiệu</a>
                     </li>
-                    <li className="nav-item">
-                                    <a className="nav-link text-dark" href="/login">Đăng nhập</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link text-dark" href="/register">Đăng ký</a>
-                                </li>   
                                 {/* 
                                 <li className="nav-item">
                                     <a className="nav-link text-dark" onClick={handleLogout} href="/">Đăng xuất</a>
                                 </li> */}
-                               <li className="nav-item">
-                        <a className="nav-link text-dark" href="/info">Thông tin</a>
-                    </li>  
                     <li className="nav-item">
                         <a className="nav-link text-dark" href="/cart">Giỏ hàng</a>
                     </li> 
-                    
+                    <li className="nav-item">
+                                    <a className="nav-link text-dark" href="/courses">Đăng xuất</a>
+                                </li>
                     </ul>
                 </div>
                 </div>

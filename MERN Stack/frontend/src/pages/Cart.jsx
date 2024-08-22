@@ -16,33 +16,18 @@ const Cart = () => {
   const [name, setName] = useState('')
   const [phonenumber, setPhoneNumber] = useState('')
   const [email, setEmail] = useState('')
-  const [cart, setCart] = useState({
+  const [cart, setCart] = useState([{
     items: [],
     totalPrice: 0
-  })
+  }])
   const [role, setRole] = useState('')
   const [userId, setUserId] = useState('')
   const navigateTo = useNavigate()
 
   const deleteCourse = async (id) => {
-    const response = await axios.delete(`http://localhost:5000/${import.meta.env.VITE_APP_API_KEY}/deletecourse/${userId}/${id}`)
+    const response = await axios.delete(`http://localhost:5000/updateinfo/deletecourse/${userId}/${id}`)
 
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token)
-      const decodedToken = jwtDecode(response.data.token)
-      setRole(decodedToken.role)
-      setUserId(decodedToken.id)
-      setName(decodedToken.name)
-      setPhoneNumber(decodedToken.phonenumber)
-      setEmail(decodedToken.email)
-      setUsername(decodedToken.username)
-      setCart({
-        items: decodedToken.cart.items,
-        totalPrice: decodedToken.cart.totalPrice
-      })
-    }
-
-    if (response.status === 200) {
+    if (response.status == 200) {
       console.log("Course deleted from user's cart successfully!")
     }
   }
@@ -50,25 +35,10 @@ const Cart = () => {
   const orderCourse = async (id) => {
     try {
       const response = await axios.post('http://localhost:5000/order', {
-        name, email, phonenumber, cart, status: true, id
+        name, email, phonenumber, cart, status: true, userId: id
       })
 
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token)
-        const decodedToken = jwtDecode(response.data.token)
-        setRole(decodedToken.role)
-        setUserId(decodedToken.id)
-        setName(decodedToken.name)
-        setPhoneNumber(decodedToken.phonenumber)
-        setEmail(decodedToken.email)
-        setUsername(decodedToken.username)
-        setCart({
-          items: decodedToken.cart.items,
-          totalPrice: decodedToken.cart.totalPrice
-        })
-      }
-
-      if (response.status === 201) {
+      if (response.status == 201) {
         console.log('Order added successfully.')
         navigateTo('/success')
       }
@@ -78,6 +48,19 @@ const Cart = () => {
   }
   
   useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    if (token) {
+      const decodedToken = jwtDecode(token)
+
+      setRole(decodedToken.role)
+      setUserId(decodedToken.id)
+      setUsername(decodedToken.username)
+      setName(decodedToken.name)
+      setPhoneNumber(decodedToken.phonenumber)
+      setEmail(decodedToken.email)
+    }
+
     const checkToken = () => {
       const token = localStorage.getItem('token')
 
@@ -95,42 +78,29 @@ const Cart = () => {
       }
     }
 
-    checkToken()
-
-    const token = localStorage.getItem('token')
-
-        if (token) {
-            const decodedToken = jwtDecode(token)
-            {/*
-            console.log('Decoded Token:', decodedToken)
-
-            const userId = decodedToken.id
-            const username = decodedToken.username
-            const name = decodedToken.name
-            const role = decodedToken.role
-
-            console.log('User ID:', userId)
-            console.log('Username:', username)
-            console.log('Name:', name)
-            console.log('Role:', role) 
-            */}
-
-            setRole(decodedToken.role)
-            setUserId(decodedToken.id)
-            setName(decodedToken.name)
-            setPhoneNumber(decodedToken.phonenumber)
-            setEmail(decodedToken.email)
-            setUsername(decodedToken.username)
-            setCart({
-              items: decodedToken.cart.items,
-              totalPrice: decodedToken.cart.totalPrice
-            })
+    const getCourse = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/updateinfo/cart/${userId}`, {
+          withCredentials: true // Ensure cookies are sent
+        })
+        
+        if (response.status == 200) {
+          console.log("User's cart fetched successfully.")
+          const data = await response.json()
+          setCart(data.cart.cart)
         }
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
-    const intervalId = setInterval(checkToken, 1000) // Check every second
+    const intervalId = setInterval(() => {
+      checkToken()
+      getCourse()
+    }, 1000) // Check every second
 
     return () => clearInterval(intervalId)
-  }, [])
+  }, [userId])
 
   return (
     <div>
@@ -151,7 +121,7 @@ const Cart = () => {
         <section className="cart_content">
         <section className="cart_item" role="list">
             {
-              cart.items.map((item, index) => (
+              cart.items && cart.items.map((item, index) => (
                 <div>
                   <div className="product_name" role="listitem">
             <div className="sanPham">
@@ -182,7 +152,7 @@ const Cart = () => {
                 <span style={{marginLeft: '-260px'}}>{item.price}</span>
                 </div>
                 <div className="content_thaoTac">
-                    <button style={{ marginLeft: '-160px'}} onClick={() => deleteCourse(item.id)} className="fX1Y2g button-pink">Xóa</button>
+                    <button style={{ marginLeft: '-160px'}} onClick={() => deleteCourse(item._id)} className="fX1Y2g button-pink">Xóa</button>
                 </div>
             </div>
             </div>
@@ -196,8 +166,7 @@ const Cart = () => {
             <div className="UQv8V6" role="region">
             <div className="fyYBP1" >
                 <div className="aiyQAr">
-                <div className="A-CcKC">Tổng giá tiền:</div>
-                <div style={{marginLeft: '30px'}} className="total">{cart.totalPrice}</div>
+                <div style={{marginLeft: '30px'}} className="total">Tổng giá tiền: {cart.totalPrice}</div>
                 </div>
             </div>
             </div>

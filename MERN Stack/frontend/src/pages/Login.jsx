@@ -42,7 +42,7 @@ const Login = () => {
         withCredentials: true // Ensure cookies are sent
       })
 
-      if (response.status === 200) {
+      if (response.status == 200) {
         console.log('Login successful:', response.data)
         const { token } = response.data
         localStorage.setItem('token', token)

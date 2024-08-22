@@ -5,8 +5,19 @@ import Footers from '../components/Footers'
 import '../css/bootstrap.min.css'
 import '../css/site.css'
 import '../css/style.css'
+import { useNavigate } from 'react-router-dom'
 
 const Success = () => {
+  const navigateTo = useNavigate()
+
+  const coursesDirect = () => {
+    navigateTo('/courses')
+  }
+
+  const homeDirect = () => {
+    navigateTo('/home')
+  }
+
   return (
     <div>
       <Heads></Heads>
@@ -18,8 +29,8 @@ const Success = () => {
           <h3>Xin vui lòng giữ liên lạc!</h3>
       </div>
       <div className="success_button">
-          <button className="button-pink "><a href="/courses">Đăng ký tiếp</a></button>
-          <button className="button-pink "><a href="/home">Quay lại trang chủ</a></button>
+          <button className="button-pink " onClick={coursesDirect}>Đăng ký tiếp</button>
+          <button className="button-pink " onClick={homeDirect}>Quay lại trang chủ</button>
       </div>
       <Footers></Footers>
         <a href="#" className="backtotop cd-top text-replace js-cd-top">

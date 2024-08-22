@@ -10,7 +10,7 @@ function route(app) {
     app.use('/course', courseRouter)
     app.use('/login', loginRouter)
     app.use('/register', registerRouter)
-    app.use(`/${process.env.API_KEY_2}`, updateInfoRouter)
+    app.use(`/updateinfo`, updateInfoRouter)
     app.use('/order', orderRouter)
 
     // Error handling middleware

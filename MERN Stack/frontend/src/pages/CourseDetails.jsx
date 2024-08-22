@@ -62,29 +62,14 @@ const CourseDetails = () => {
             setUserId(decodedToken.id)
         }
 
-        const response = await axios.post(`http://localhost:5000/${import.meta.env.VITE_APP_API_KEY}/addcourse`, {
+        const response = await axios.post(`http://localhost:5000/updateinfo/addcourse`, {
           id: decodedToken.id,
           name: courseId.name,
           price: courseId.price,
           photo: courseId.photo
         })
 
-        if (response.data.token) {
-          localStorage.setItem('token', response.data.token)
-          const decodedToken = jwtDecode(response.data.token)
-          setRole(decodedToken.role)
-          setUserId(decodedToken.id)
-          setName(decodedToken.name)
-          setPhoneNumber(decodedToken.phonenumber)
-          setEmail(decodedToken.email)
-          setUsername(decodedToken.username)
-          setCart({
-            items: decodedToken.cart.items,
-            totalPrice: decodedToken.cart.totalPrice
-          })
-        }
-
-        if (response.status === 201) {
+        if (response.status == 201) {
           console.log('Course added to cart successfully.')
           navigateTo('/cart')
         }
@@ -93,64 +78,32 @@ const CourseDetails = () => {
       }
     }
 
-    useEffect(() => {
-      const token = localStorage.getItem('token')
+    const fetchProductsAPI = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/course/edit/${id}`)
 
-        if (token) {
-            const decodedToken = jwtDecode(token)
-            {/*
-            console.log('Decoded Token:', decodedToken)
-
-            const userId = decodedToken.id
-            const username = decodedToken.username
-            const name = decodedToken.name
-            const role = decodedToken.role
-
-            console.log('User ID:', userId)
-            console.log('Username:', username)
-            console.log('Name:', name)
-            console.log('Role:', role) 
-            */}
-
-            setRole(decodedToken.role)
-            setUserId(decodedToken.id)
-            setName(decodedToken.name)
-            setPhoneNumber(decodedToken.phonenumber)
-            setEmail(decodedToken.email)
-            setUsername(decodedToken.username)
-            setCart({
-              items: decodedToken.cart.items,
-              totalPrice: decodedToken.cart.totalPrice
-            })
+        if (response.status == 200) {
+          console.log('Data fetched successfully.')
+          const data = await response.json()
+          setCourseId(data.courseID)
         }
-
-        const fetchProductsAPI = async () => {
-          try {
-            const response = await fetch(`http://localhost:5000/course/edit/${id}`)
-    
-            if (!response.ok) {
-              console.error('Failed to fetch data!')
-            }
-    
-            const data = await response.json()
-            setCourseId(data.courseID)
-          } catch (error) {
-            console.error("Error: ", error)
-          }
-        }
-    
-        fetchProductsAPI()
-
-        const checkLoginStatus = () => {
-          const token = localStorage.getItem('token')
-          if (token && !isJwtExpired(token)) {
-              setIsLoggedIn(true)
-          } else {
-              setIsLoggedIn(false)
-              localStorage.removeItem('token')
-          }
+      } catch (error) {
+        console.error("Error: ", error)
       }
+    }
 
+    const checkLoginStatus = () => {
+      const token = localStorage.getItem('token')
+      if (token && !isJwtExpired(token)) {
+          setIsLoggedIn(true)
+      } else {
+          setIsLoggedIn(false)
+          localStorage.removeItem('token')
+      }
+    }
+
+    useEffect(() => {
+      fetchProductsAPI()
       checkLoginStatus()
     
         // Fetch data every 2 seconds

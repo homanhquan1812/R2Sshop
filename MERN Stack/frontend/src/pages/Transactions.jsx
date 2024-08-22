@@ -13,79 +13,74 @@ const Transactions = () => {
   const [username, setUsername] = useState('')
   const [name, setName] = useState('')
   const [role, setRole] = useState('')
+  const [phonenumber, setPhoneNumber] = useState('')
   const [userId, setUserId] = useState('')
+  const [email, setEmail] = useState('')
   const [orders, setOrders] = useState([])
   const [userOrders, setUserOrders] = useState([])
 
   useEffect(() => {
     const token = localStorage.getItem('token')
 
-        if (token) {
-            const decodedToken = jwtDecode(token)
-            {/*
-            console.log('Decoded Token:', decodedToken)
+    if (token) {
+      const decodedToken = jwtDecode(token)
 
-            const userId = decodedToken.id
-            const username = decodedToken.username
-            const name = decodedToken.name
-            const role = decodedToken.role
+      setRole(decodedToken.role)
+      setUserId(decodedToken.id)
+      setName(decodedToken.name)
+      setPhoneNumber(decodedToken.phonenumber)
+      setEmail(decodedToken.email)
+      setUsername(decodedToken.username)
+    }
 
-            console.log('User ID:', userId)
-            console.log('Username:', username)
-            console.log('Name:', name)
-            console.log('Role:', role) 
-            */}
-
-            setRole(decodedToken.role)
-            setUserId(decodedToken.id)
-            setName(decodedToken.name)
-            setUsername(decodedToken.username)
-        }
-
-        // For Admin's transactions
-        const fetchData = async () => {
-          try {
-            const response = await fetch('http://localhost:5000/order')
-    
-            if (response.status === 200) {
-              const data = await response.json()
-              setOrders(data.orders)
-              console.log(orders)
-              console.log('Got data successfully.')
-            }
-          } catch (error) {
-            console.error(error)
+    if (role === 'Admin') {
+      // For Admin's transactions
+      const fetchData = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/order')
+  
+          if (response.status === 200) {
+            const data = await response.json()
+            setOrders(data.orders)
+            console.log('Got all orders successfully.')
           }
+        } catch (error) {
+          console.error(error)
         }
+      }
 
-        // For specific user's transactions
-        const fetchData2 = async () => {
-          try {
-            const response = await fetch('http://localhost:5000/order')
-    
-            if (response.status === 200) {
-              const data = await response.json()
-              const userOrders = data.orders.filter(order => order.name === name)
-              setUserOrders(userOrders)
-              console.log(userOrders)
-              console.log('Got data successfully.')
-            }
-          } catch (error) {
-            console.error(error)
-          }
-        }
-    
+      fetchData()
+
+      const intervalId = setInterval(() => {
         fetchData()
-    
-        fetchData2()
+      }, 6000) // 60 seconds
+  
+      return () => clearInterval(intervalId)
+    } else {
+      // For specific user's transactions
+      const fetchData2 = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/order')
+          if (response.status === 200) {
+            const data = await response.json()
+            const userOrders = data.orders.filter(order => order.userId === userId)
+            setUserOrders(userOrders)
+            console.log("Got user's orders successfully.")
+          }
+        } catch (error) {
+          console.error(error)
+        }
+      }
 
-        const intervalId = setInterval(() => {
-          fetchData()
-          fetchData2()
-        }, 6000) // 60 seconds
-    
-        return () => clearInterval(intervalId)
-  }, [name]) // Add this or else the page will get blank
+      fetchData2()
+
+      const intervalId = setInterval(() => {
+        fetchData2()
+      }, 6000) // 60 seconds
+  
+      return () => clearInterval(intervalId)
+    }
+  }, [userId])
 
   return (
     <div>
@@ -117,7 +112,6 @@ const Transactions = () => {
                               (order.cart.items.length > 0) ? (
                                 <tr key={index}>
                                 <td>{order.createdAt}</td>
-                                {/* <td>{order.cart.items[0]?.name}</td> */}
                                 {
                                   order.cart.items.map((item, index) => (
                                     <div key={index} style={{marginTop: '20px', marginBottom: '20px'}}>
@@ -132,12 +126,6 @@ const Transactions = () => {
                                   ) : (
                                     <button type="button" className="btn btn-danger">Thất bại</button>
                                   )}
-                                  {/* 
-                                    ) : order.status === 'true' ? (
-                                    <button type="button" className="btn btn-success">Delivered</button>
-                                  ) : (
-                                    <button type="button" className="btn btn-warning">Processing</button>
-                                  )} */}
                                 </td>
                               </tr>
                               ) : (
@@ -178,7 +166,6 @@ const Transactions = () => {
                                 <td>{order.email}</td>
                                 <td>{order.phonenumber}</td>
                                 <td>{order.createdAt}</td>
-                                {/* <td>{order.cart.items[0]?.name}</td> */}
                                 {
                                   order.cart.items.map((item, index) => (
                                     <div key={index} style={{marginTop: '20px', marginBottom: '20px'}}>
@@ -193,12 +180,6 @@ const Transactions = () => {
                                   ) : (
                                     <button type="button" className="btn btn-danger">Thất bại</button>
                                   )}
-                                  {/* 
-                                    ) : order.status === 'true' ? (
-                                    <button type="button" className="btn btn-success">Delivered</button>
-                                  ) : (
-                                    <button type="button" className="btn btn-warning">Processing</button>
-                                  )} */}
                                 </td>
                               </tr>
                               )

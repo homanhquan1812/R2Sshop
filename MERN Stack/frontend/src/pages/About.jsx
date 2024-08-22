@@ -14,7 +14,7 @@ const About = () => {
   useEffect(() => {
     const checkToken = () => {
       const token = localStorage.getItem('token')
-
+  
       if (token) {
         try {
           const decodedToken = jwtDecode(token)
@@ -28,7 +28,7 @@ const About = () => {
         setIsLoggedIn(false)
       }
     }
-
+    
     checkToken()
 
     const intervalId = setInterval(checkToken, 1000) // Check every second

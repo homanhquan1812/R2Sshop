@@ -26,7 +26,7 @@ const AddCourses = () => {
         name, description, type, price, number_of_students: 0, duration, photo
       })
 
-      if (response.status === 201) {
+      if (response.status == 201) {
         console.log('Added a new course successfully!')
         navigate('/courses')
       }

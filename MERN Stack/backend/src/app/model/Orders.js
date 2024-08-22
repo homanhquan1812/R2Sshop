@@ -24,7 +24,12 @@ const Orders = new Schema({
         items: [DetailedCourse], 
         totalPrice: { type: Number, default: 0 }
     },
-    status: { type: Boolean, required: true }
+    status: { type: Boolean, required: true },
+    userId: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'users'
+    },
 }, { timestamps: true });
 
 /*

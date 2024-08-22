@@ -30,12 +30,12 @@ class OrderController
     async createAnOrder(req, res, next)
     {
         try {        
-            const { name, email, phone, cart, status, id } = req.body
+            const { name, email, phone, cart, status, userId } = req.body
 
             const newOrder = new Orders(req.body)
             await newOrder.save()
 
-            let userMatch = await Users.findById(id)
+            let userMatch = await Users.findById(userId)
 
             if (!userMatch) {
                 return res.status(404).json({

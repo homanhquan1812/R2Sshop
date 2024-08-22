@@ -6,6 +6,19 @@ const Admins = require('../model/Admins')
 const jwt = require('jsonwebtoken')
 
 class UpdateInfoController {
+    async getCart(req, res, next) {
+        try {
+            const id = req.params.id
+
+            res.status(200).json({
+                id: id,
+                cart: await Users.findById(id, 'cart')
+           })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     async addCourse(req, res, next) {
         try {
             const { name, price, id, photo } = req.body
@@ -13,9 +26,7 @@ class UpdateInfoController {
             let userMatch = await Users.findById(id)
 
             if (!userMatch) {
-                return res.status(404).json({
-                    message: 'User not found'
-                })
+                return res.status(404).json('User not found.')
             }
 
             userMatch.cart.items.push({ name, price, photo })
@@ -23,6 +34,7 @@ class UpdateInfoController {
 
             await userMatch.save()
 
+            /*
             // Generate a new JWT with updated details
             const newToken = jwt.sign({
                 id: userMatch._id,
@@ -36,11 +48,9 @@ class UpdateInfoController {
                     totalPrice: userMatch.cart.totalPrice
                 }
             }, process.env.SECRET_KEY, { expiresIn: '1h' })
+            */
 
-            res.status(201).json({
-                message: "Course added to this user's cart successfully.",
-                token: newToken
-            })
+            res.status(201).json("Course added to this user's cart successfully.")
         } catch (error) {
             next(error)
         }
@@ -53,9 +63,7 @@ class UpdateInfoController {
             const user = await Users.findById(userId)
 
             if (!user) {
-                return res.status(404).json({ 
-                    message: 'User not found.' 
-                })
+                return res.status(404).json('User not found.')
             }
             
             user.cart.items = user.cart.items.filter(item => item._id.toString() !== id)
@@ -64,6 +72,7 @@ class UpdateInfoController {
             await user.save()
 
             // Generate a new JWT with updated details
+            /*
             const newToken = jwt.sign({
                 id: user._id,
                 username: user.username, 
@@ -76,11 +85,9 @@ class UpdateInfoController {
                     totalPrice: user.cart.totalPrice
                 }
             }, process.env.SECRET_KEY, { expiresIn: '1h' })
+            */
 
-            res.status(200).json({ 
-                message: 'Course deleted from cart successfully.',
-                token: newToken
-            })
+            res.status(200).json('Course deleted from cart successfully.')
         } catch (error) {
             next(error)
         }
@@ -117,6 +124,8 @@ class UpdateInfoController {
                 id: idMatch._id,
                 username: idMatch.username,
                 name: name,
+                email: idMatch.email, 
+                phonenumber: idMatch.phonenumber, 
                 role: idMatch.role
             }, process.env.SECRET_KEY, { expiresIn: '1h' })
 
@@ -149,16 +158,13 @@ class UpdateInfoController {
             }
 
             if (!user) {
-                return res.status(404).json({
-                    message: "This ID doesn't exist."
-                })
+                return res.status(404).json("This ID doesn't exist.")
             }
 
             const passwordMatch = await bcrypt.compare(oldPassword, user.password)
+
             if (!passwordMatch) {
-                return res.status(401).json({
-                    message: 'Old password is incorrect.'
-                })
+                return res.status(401).json('Old password is incorrect.')
             }
 
             const hashedPassword = await bcrypt.hash(newPassword, 10)
@@ -166,9 +172,7 @@ class UpdateInfoController {
             
             await user.save()
 
-            res.status(200).json({
-                message: 'Password updated successfully.'
-            })
+            res.status(200).json('Password updated successfully.')
             
         } catch (error) {
             next(error)

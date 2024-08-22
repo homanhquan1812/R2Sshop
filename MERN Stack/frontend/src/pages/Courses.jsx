@@ -1,5 +1,4 @@
 import { React, useState, useEffect } from 'react'
-import axios from 'axios'
 import { jwtDecode } from "jwt-decode"
 import { useNavigate } from 'react-router-dom'
 import Heads from '../components/Heads'
@@ -13,58 +12,27 @@ const Courses = () => {
   const [products, setProducts] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [role, setRole] = useState([])
-  const productsPerPage = 6
+  const navigateTo = useNavigate()
 
+  const productsPerPage = 6
   // Calculate the products to display on the current page
   const indexOfLastProduct = currentPage * productsPerPage
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct)
-
   // Calculate the total number of pages
   const totalPages = Math.ceil(products.length / productsPerPage)
-
   // Handle page change
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
-
-  const navigateTo = useNavigate()
 
   const handleAddProduct = () => {
       navigateTo('/courses/add')
   }
 
-  const deleteProduct = async (id, e) => {
-    e.preventDefault()
-
-    try {
-      const response = await axios.delete(`http://localhost:5000/course/${id}`)
-      
-      if (response.status == 200) {
-        console.log('Deleted this product successfully.')
-      }
-    } catch (error) {
-      console.error("Error deleting product:", error)
-    }
-  }
-
   useEffect(() => {
-    // Token information
     const token = localStorage.getItem('token')
 
     if (token) {
       const decodedToken = jwtDecode(token)
-      {/*
-      console.log('Decoded Token:', decodedToken)
-
-      const userId = decodedToken.id
-      const username = decodedToken.username
-      const name = decodedToken.name
-      const role = decodedToken.role
-
-      console.log('User ID:', userId)
-      console.log('Username:', username)
-      console.log('Name:', name)
-      console.log('Role:', role) 
-      */}
 
       setRole(decodedToken.role)
     }

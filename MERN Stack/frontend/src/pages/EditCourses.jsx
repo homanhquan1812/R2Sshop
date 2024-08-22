@@ -42,7 +42,7 @@ const EditCourses = () => {
       const response = await axios.put(`http://localhost:5000/course/edit/${id}`, {
         name, description, type, price, duration, photo
       })
-      if (response.status === 200) {
+      if (response.status == 200) {
         console.log('Updated course successfully!', response.data)
         navigateTo('/courses')
       }

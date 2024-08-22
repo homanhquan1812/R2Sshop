@@ -27,54 +27,14 @@ const Info = () => {
   const [changeSuccessful, setChangeSuccessful] = useState(false)
   const navigateTo = useNavigate()
 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-
-        if (token) {
-            const decodedToken = jwtDecode(token)
-            {/*
-            console.log('Decoded Token:', decodedToken)
-
-            const userId = decodedToken.id
-            const username = decodedToken.username
-            const name = decodedToken.name
-            const role = decodedToken.role
-
-            console.log('User ID:', userId)
-            console.log('Username:', username)
-            console.log('Name:', name)
-            console.log('Role:', role) 
-            */}
-
-            if (decodedToken.role == 'User') {
-              setRole(decodedToken.role)
-              setUserId(decodedToken.id)
-              setName(decodedToken.name)
-              setPhoneNumber(decodedToken.phonenumber)
-              setEmail(decodedToken.email)
-              setUsername(decodedToken.username)
-              setCart({
-                items: decodedToken.cart.items,
-                totalPrice: decodedToken.cart.totalPrice
-              })
-            } else {
-              setRole(decodedToken.role)
-              setUserId(decodedToken.id)
-              setName(decodedToken.name)
-              setPhoneNumber(decodedToken.phonenumber)
-              setEmail(decodedToken.email)
-              setUsername(decodedToken.username)
-            }
-        }
-    }, [])
-
   const submit = async (e) => {
     e.preventDefault()
 
     const token = localStorage.getItem('token')
     
     try {
-      const response = await axios.put(`http://localhost:5000/${import.meta.env.VITE_APP_API_KEY}/info`, {
+      // const response = await axios.put(`http://localhost:5000/${import.meta.env.VITE_APP_API_KEY}/info`, {
+      const response = await axios.put(`http://localhost:5000/updateinfo/info`, {
         name, phonenumber, email
       }, { 
         headers: { 
@@ -94,7 +54,8 @@ const Info = () => {
       }
       
       if (newPassword != '') {
-        await axios.put(`http://localhost:5000/${import.meta.env.VITE_APP_API_KEY}/password`, {
+        // await axios.put(`http://localhost:5000/${import.meta.env.VITE_APP_API_KEY}/password`, {
+        await axios.put(`http://localhost:5000/updateinfo/password`, {
           oldPassword,
           newPassword
         }, { 
@@ -117,6 +78,21 @@ const Info = () => {
       console.error("Error: ", error)
     }
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    if (token) {
+      const decodedToken = jwtDecode(token)
+
+      setRole(decodedToken.role)
+      setUserId(decodedToken.id)
+      setName(decodedToken.name)
+      setPhoneNumber(decodedToken.phonenumber)
+      setEmail(decodedToken.email)
+      setUsername(decodedToken.username)
+    }
+  }, [])
 
   return (
     <div>
