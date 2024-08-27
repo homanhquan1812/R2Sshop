@@ -19,24 +19,21 @@ class RegisterController
                 return res.status(401).json('This username already exists.')
             }
 
-            // User register
+            // Hashing + Salting
+            const saltRounds = 10 // Min: 10 = Enough, Max: 12 = Slower performance but better security
+            const hashedPassword = await bcrypt.hash(password, saltRounds)
+
+            // User registration
             if (key == null || key != process.env.STAFF_KEY) {
-                // Hashing + Salting
-                const saltRounds = 10 // Min: 10 = Enough, Max: 12 = Slower performance but better security
-                const hashedPassword = await bcrypt.hash(password, saltRounds)
-                // User role
-                const role = 'User'
+                const role = 'User' // User role
                 const newUser = new Users({ name, username, password: hashedPassword, role, email, phonenumber })
                 await newUser.save()
 
                 res.status(201).json('User registered successfully.')
             } 
-            // Admin register
+            // Admin registration
             else if (key == process.env.STAFF_KEY) {
-                const saltRounds = 10 // Min: 10 = Enough, Max: 12 = Slower performance but better security
-                const hashedPassword = await bcrypt.hash(password, saltRounds)
-                // Admin role
-                const role = 'Admin'
+                const role = 'Admin' // Admin role
                 const newUser = new Admins({ name, username, password: hashedPassword, role, email, phonenumber })
                 await newUser.save()
 

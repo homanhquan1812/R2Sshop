@@ -49,20 +49,6 @@ class OrderController
 
             await userMatch.save()
 
-            // Generate a new JWT with updated details
-            const newToken = jwt.sign({
-                id: userMatch._id,
-                username: userMatch.username, 
-                name: userMatch.name, 
-                email: userMatch.email, 
-                phonenumber: userMatch.phonenumber, 
-                role: userMatch.role,
-                cart: {
-                    items: userMatch.cart.items,
-                    totalPrice: userMatch.cart.totalPrice
-                }
-            }, process.env.SECRET_KEY, { expiresIn: '1h' })
-
             res.status(201).json({
                 message: "Course added to this user's cart successfully.",
                 token: newToken

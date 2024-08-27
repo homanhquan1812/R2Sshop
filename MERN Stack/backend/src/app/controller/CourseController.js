@@ -20,6 +20,7 @@ class CourseController
             next(error)
         }
     }
+
     /*
      * 2. Get a course
     */
@@ -50,7 +51,7 @@ class CourseController
     async getAllCoursesRegistered(req, res, next)
     {
         try {        
-            const userId = await Users.find({}, 'cart name username')
+            const userId = await Users.find({}, 'cart name username') // Only takes 'cart', 'name', and 'username' from Users
 
             res.status(200).json({
                 userId: multipleMongooseToObject(userId)
@@ -103,11 +104,6 @@ class CourseController
     async deleteACourse(req, res, next) {
         try {
             await Courses.findByIdAndDelete(req.params.id)
-            /*
-             * Mongoose Delete:
-                const course = await Course.findById(req.params.id);
-                await course.delete();
-            */
 
             res.status(200).json({
                 message: "Course deleted successfully!"
