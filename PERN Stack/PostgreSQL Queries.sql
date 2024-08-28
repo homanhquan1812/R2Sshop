@@ -122,3 +122,15 @@ FROM (VALUES
     (105000, 3, 20, 'Docker')
 ) AS v(price, duration, number_of_students, course_name)
 JOIN course_ids c ON c.name = v.course_name;
+
+-- Users' Orders Table
+CREATE TABLE orders (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phonenumber VARCHAR(20),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    cart JSONB DEFAULT '{"totalPrice": 0, "items": []}',  -- Default value as JSON
+    status BOOLEAN DEFAULT FALSE,  -- Added status column with default value
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

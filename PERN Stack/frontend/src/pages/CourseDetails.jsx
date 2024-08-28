@@ -66,7 +66,8 @@ const CourseDetails = () => {
           id: decodedToken.id,
           name: courseId.name,
           price: courseId.price,
-          photo: courseId.photo
+          photo: courseId.photo,
+          courseId: courseId._id
         })
 
         if (response.status == 201) {
@@ -85,7 +86,7 @@ const CourseDetails = () => {
         if (response.status == 200) {
           console.log('Data fetched successfully.')
           const data = await response.json()
-          setCourseId(data.courseID)
+          setCourseId(data.course)
         }
       } catch (error) {
         console.error("Error: ", error)

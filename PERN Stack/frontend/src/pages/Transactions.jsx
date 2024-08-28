@@ -63,7 +63,7 @@ const Transactions = () => {
           const response = await fetch('http://localhost:5000/order')
           if (response.status === 200) {
             const data = await response.json()
-            const userOrders = data.orders.filter(order => order.userId === userId)
+            const userOrders = data.orders.filter(order => order.user_id === userId)
             setUserOrders(userOrders)
             console.log("Got user's orders successfully.")
           }

@@ -43,7 +43,8 @@ const Courses = () => {
           withCredentials: true // Ensure cookies are sent
         })
         const data = await response.json()
-        setProducts(data.course)
+        const courses = data.course.map(course => course.course_json)
+        setProducts(courses)
       } catch (error) {
         console.error("Error: ", error)
       }

@@ -94,7 +94,7 @@ class UpdateInfoController {
     }
 
     async updateInfo(req, res, next) {
-        const { name } = req.body
+        const { name, email, phonenumber } = req.body
         const token = req.headers.authorization.split(' ')[1]
 
         try {
@@ -103,13 +103,13 @@ class UpdateInfoController {
 
             // User case
             let idMatch = await Users.findByIdAndUpdate(id, {
-                name
+                name, email, phonenumber
             })
 
             if (!idMatch) {
                 // Admin case
                 idMatch = await Admins.findByIdAndUpdate(id, {
-                    name
+                    name, email, phonenumber
                 })
             }
 
@@ -124,14 +124,16 @@ class UpdateInfoController {
                 id: idMatch._id,
                 username: idMatch.username,
                 name: name,
-                email: idMatch.email, 
-                phonenumber: idMatch.phonenumber, 
+                email: email, 
+                phonenumber: phonenumber, 
                 role: idMatch.role
             }, process.env.SECRET_KEY, { expiresIn: '1h' })
 
             res.status(200).json({
                 message: "Name updated successfully.",
                 name: name,
+                email: email, 
+                phonenumber: phonenumber, 
                 token: newToken
             })
             

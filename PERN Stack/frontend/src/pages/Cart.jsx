@@ -35,7 +35,7 @@ const Cart = () => {
   const orderCourse = async (id) => {
     try {
       const response = await axios.post('http://localhost:5000/order', {
-        name, email, phonenumber, cart, status: true, userId: id
+        name, email, phonenumber, cart, status: true, user_id: id
       })
 
       if (response.status == 201) {
@@ -87,7 +87,7 @@ const Cart = () => {
         if (response.status == 200) {
           console.log("User's cart fetched successfully.")
           const data = await response.json()
-          setCart(data.cart.cart)
+          setCart(data.cart)
         }
       } catch (error) {
         console.error(error)
@@ -152,7 +152,7 @@ const Cart = () => {
                 <span style={{marginLeft: '-260px'}}>{item.price}</span>
                 </div>
                 <div className="content_thaoTac">
-                    <button style={{ marginLeft: '-160px'}} onClick={() => deleteCourse(item._id)} className="fX1Y2g button-pink">Xóa</button>
+                    <button style={{ marginLeft: '-160px'}} onClick={() => deleteCourse(item.courseId)} className="fX1Y2g button-pink">Xóa</button>
                 </div>
             </div>
             </div>

@@ -10,46 +10,54 @@ import '../css/style.css'
 
 const EditCourses = () => {
   const { id } = useParams()
-  const [courseData, setCourseData] = useState([])
-  const [name, setName] = useState(courseData.name)
-  const [type, setType] = useState(courseData.type)
-  const [price, setPrice] = useState(courseData.price)
-  const [description, setDescription] = useState(courseData.description)
-  const [duration, setDuration] = useState(courseData.duration)
-  const [photo, setPhoto] = useState(courseData.photo)
-  const navigateTo = useNavigate()
+const [courseData, setCourseData] = useState(null)
+const [name, setName] = useState('')
+const [type, setType] = useState('')
+const [price, setPrice] = useState('')
+const [description, setDescription] = useState('')
+const [duration, setDuration] = useState('')
+const [photo, setPhoto] = useState('')
+const navigateTo = useNavigate()
 
-  useEffect(() => {
-    const fetchCourseData = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/course/edit/${id}`)
-        if (!response.ok) {
-          throw new Error('Failed to fetch data!')
-        }
-        const data = await response.json()
-        setCourseData(data.courseID)
-      } catch (error) {
-        console.error("Error: ", error)
-      }
-    }
-
-    fetchCourseData()
-  }, [id])
-
-  const submit = async (e) => {
-    e.preventDefault()
+useEffect(() => {
+  const fetchCourseData = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/course/edit/${id}`, {
-        name, description, type, price, duration, photo
-      })
-      if (response.status == 200) {
-        console.log('Updated course successfully!', response.data)
-        navigateTo('/courses')
+      const response = await fetch(`http://localhost:5000/course/edit/${id}`)
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data!')
       }
+      
+      const data = await response.json()
+      setCourseData(data.course)
+      setName(data.course.name || '')
+      setType(data.course.type || '')
+      setPrice(data.course.price || '')
+      setDescription(data.course.description || '')
+      setDuration(data.course.duration || '')
+      setPhoto(data.course.photo || '')
     } catch (error) {
       console.error("Error: ", error)
     }
   }
+
+  fetchCourseData()
+}, [id])
+
+const submit = async (e) => {
+  e.preventDefault()
+  try {
+    const response = await axios.put(`http://localhost:5000/course/edit/${id}`, {
+      name, description, type, price, duration, photo
+    })
+    if (response.status === 200) {
+      console.log('Updated course successfully!', response.data)
+      navigateTo('/courses')
+    }
+  } catch (error) {
+    console.error("Error: ", error)
+  }
+}
 
   const deleteProduct = async (id, e) => {
     e.preventDefault()
