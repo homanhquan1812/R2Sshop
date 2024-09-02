@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Heads from '../components/Heads'
 import Headers from '../components/Headers'
 import Footers from '../components/Footers'
-import '../css/bootstrap.min.css'
-import '../css/site.css'
-import '../css/style.css'
 import { useNavigate } from 'react-router-dom'
 
 const Success = () => {
@@ -20,7 +17,15 @@ const Success = () => {
 
   return (
     <div>
-      <Heads></Heads>
+      <Heads
+      additionalStylesheets={[
+        "/css/bootstrap.min.css",
+        "/css/site.css",
+        "/css/style.css"
+      ]}
+      additionalTitle={[
+        "Thành công - R2Sshop"
+      ]}></Heads>
         <Headers></Headers>
       <div className="success_detail">
           <h2>Đăng ký khóa học thành công!</h2>

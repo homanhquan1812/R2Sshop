@@ -4,9 +4,6 @@ import axios from 'axios'
 import Heads from '../components/Heads'
 import Headers from '../components/Headers'
 import Footers from '../components/Footers'
-import '../css/bootstrap.min.css'
-import '../css/site.css'
-import '../css/style.css'
 
 const Register = () => {
   const [username, setUsername] = useState('')
@@ -45,7 +42,15 @@ const Register = () => {
 
   return (
     <div>
-      <Heads></Heads>
+      <Heads
+      additionalStylesheets={[
+        "/css/bootstrap.min.css",
+        "/css/site.css",
+        "/css/style.css"
+      ]}
+      additionalTitle={[
+        "Đăng ký tài khoản - R2Sshop"
+      ]}></Heads>
       <Headers></Headers>
       <div class="container">
             <main role="main" class="pb-3">

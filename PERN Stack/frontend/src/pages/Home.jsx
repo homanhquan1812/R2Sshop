@@ -4,9 +4,6 @@ import { jwtDecode } from 'jwt-decode'
 import Heads from '../components/Heads'
 import Headers from '../components/Headers'
 import Footers from '../components/Footers'
-import '../css/bootstrap.min.css'
-import '../css/site.css'
-import '../css/style.css'
 
 const Home = () => {
   const [user, setUser] = useState([])
@@ -58,7 +55,15 @@ const Home = () => {
 
   return (
     <div>
-      <Heads></Heads>
+      <Heads
+      additionalStylesheets={[
+        "/css/bootstrap.min.css",
+        "/css/site.css",
+        "/css/style.css"
+      ]}
+      additionalTitle={[
+        "Trang chủ - R2Sshop"
+      ]}></Heads>
       <Headers></Headers>
       <div className="text-center">
         <h1 className="display-4" style={styles.title}>Nhiệm vụ đào tạo của R2S

@@ -40,7 +40,7 @@ class Heads extends React.Component {
 
               {/* Additional Stylesheets */}
               {additionalStylesheets.map((href, index) => (
-                <link key={index} rel="stylesheet" href={href} />
+                <link key={index} type="text/css" rel="stylesheet" href={href} />
               ))}
             </Helmet>
         </div>

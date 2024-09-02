@@ -5,9 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import Heads from '../components/Heads'
 import Headers from '../components/Headers'
 import Footers from '../components/Footers'
-import '../css/bootstrap.min.css'
-import '../css/site.css'
-import '../css/style.css'
 
 const Cart = () => {
   const [user, setUser] = useState([])
@@ -104,7 +101,15 @@ const Cart = () => {
 
   return (
     <div>
-      <Heads></Heads>
+      <Heads
+      additionalStylesheets={[
+        "/css/bootstrap.min.css",
+        "/css/site.css",
+        "/css/style.css"
+      ]}
+      additionalTitle={[
+        "Giỏ hàng - R2Sshop"
+      ]}></Heads>
       <Headers></Headers>
       <div class="container">
         <main role="main" class="pb-3">

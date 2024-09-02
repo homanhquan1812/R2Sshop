@@ -1,11 +1,16 @@
 import React from 'react'
 import Heads from '../components/Heads'
-import '../css/error.css'
 
 const Error = () => {
   return (
     <div>
-        <Heads></Heads>
+        <Heads
+        additionalStylesheets={[
+          "/css/error.css"
+        ]}
+        additionalTitle={[
+          "Lỗi - R2Sshop"
+        ]}></Heads>
         <div id="notfound">
             <div class="notfound">
                 <div class="notfound-404">

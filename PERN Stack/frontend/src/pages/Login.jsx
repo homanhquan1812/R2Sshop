@@ -4,9 +4,6 @@ import axios from 'axios'
 import Heads from '../components/Heads'
 import Headers from '../components/Headers'
 import Footers from '../components/Footers'
-import '../css/bootstrap.min.css'
-import '../css/site.css'
-import '../css/style.css'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -58,7 +55,15 @@ const Login = () => {
 
   return (
     <div>
-      <Heads />
+      <Heads
+      additionalStylesheets={[
+        "/css/bootstrap.min.css",
+        "/css/site.css",
+        "/css/style.css"
+      ]}
+      additionalTitle={[
+        "Đăng nhập - R2Sshop"
+      ]} />
       <Headers />
       <div className="container">
         <main role="main" className="pb-3">
