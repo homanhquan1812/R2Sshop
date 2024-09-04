@@ -60,8 +60,6 @@ None.
 ![image](https://github.com/user-attachments/assets/15c3ed98-4d1f-4fe8-bd61-458db7264b0d)
 ![image](https://github.com/user-attachments/assets/625f1eb9-1540-449d-bcc1-2c32aa65d486)
 ![image](https://github.com/user-attachments/assets/410a3d15-0316-4ff4-8875-1f3ab497904e)
-![image](https://github.com/user-attachments/assets/fe746c36-3ff3-424e-a817-bd2b9a286452)
-
 # Credits
 ## PERN Stack
 1. **Full-stack Developer**: Hồ Mạnh Quân.
